@@ -1,0 +1,19 @@
+# node_modules
+node_modules
+
+# log file 
+*.log
+
+# database config file
+database-init.js
+
+# test file
+test.js
+
+# ssl 
+ssl
+
+.editorconfig
+.eslintignore
+.eslintrc
+.vscode/

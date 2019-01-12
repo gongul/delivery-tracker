@@ -1,0 +1,46 @@
+{
+  "name": "loopback",
+  "version": "1.0.0",
+  "main": "server/server.js",
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "start": "node .",
+    "posttest": "npm run lint"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "child_process": "^1.0.2",
+    "cluster": "^0.7.7",
+    "compression": "^1.0.3",
+    "cors": "^2.5.2",
+    "helmet": "^3.10.0",
+    "html-entities": "^1.2.1",
+    "https": "^1.0.0",
+    "iconv": "^2.3.2",
+    "jsdom": "^13.1.0",
+    "loopback": "^3.22.0",
+    "loopback-boot": "^2.6.5",
+    "loopback-component-explorer": "^6.2.0",
+    "loopback-connector-mysql": "^5.3.1",
+    "phantom": "^6.0.3",
+    "querystring": "^0.2.0",
+    "serve-favicon": "^2.0.1",
+    "ssl-root-cas": "^1.2.5",
+    "strong-error-handler": "^3.0.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-config-loopback": "^8.0.0"
+  },
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "license": "UNLICENSED",
+  "description": "loopback"
+}

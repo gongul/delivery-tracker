@@ -1,0 +1,97 @@
+{
+  "name": "carrier",
+  "base": "Model",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "table": "Carrier"
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "required": true,
+      "id": 1,
+      "mysql": {
+        "columnName": "id",
+        "dataType": "VARCHAR",
+        "dataLength": 20,
+        "nullable": "N"
+      }
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "mysql": {
+        "columnName": "name",
+        "dataType": "VARCHAR",
+        "dataLength": 20,
+        "nullable": "N"
+      }
+    },
+    "tel": {
+      "type": "string",
+      "mysql": {
+        "columnName": "tel",
+        "dataType": "VARCHAR",
+        "dataLength": 20,
+        "nullable": "Y"
+      }
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {
+    "getAllCarrier": {
+      "accepts": [],
+      "returns": {
+        "arg": "carrierList",
+        "type": "string"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/"
+      }
+    },
+    "getCarrier":{
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "returns": {
+        "arg": "carrier",
+        "type": "string"
+      },
+      "http": {
+        "verb": "get",
+        "path": "/:id"
+      }
+    },
+    "getDelivery": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "arg": "trackId",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "returns": {
+        "arg": "delivery",
+        "type": "json"
+      },
+      "http": {
+        "verb": "get", 
+        "path": "/:id/tracks/:trackId"
+      }
+    }
+  }
+}
