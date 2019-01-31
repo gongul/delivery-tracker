@@ -12,10 +12,14 @@ NODE(LOOPBACK),NODE CLUSTER
 순서대로 하시면 됩니다.
 
 GIT
+
     git clone
 
 NPM
+    
     npm install 
 
-Node
+NODE
+    
     node .
+
