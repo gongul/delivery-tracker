@@ -35,6 +35,38 @@ const cjLogistics = (data) => {
   return result;
 }
 
+const hanjin = ($,$info,$list) => {
+  const sender = $info.eq(3).find('span').text();
+  const recipient = $info.eq(4).find('span').text();
+  
+  let result = {
+    deliveryInfo : {
+      sender: sender,
+      recipient: recipient,
+    },
+    deliveryDetailInfo : []
+  }
+  
+  $list.each((index,elem) => {
+    if($list.length - 1 == index){
+      return false;
+    }
+    const $td = $(elem).find('td');
+    
+    result.deliveryDetailInfo.push({
+      message: '',
+      time: `${$td.eq(0).text()} ${$td.eq(1).text()}:00.000`,
+      location: $td.eq(2).text(),
+      status: $td.eq(3).text().trim(),
+      action: $td.eq(3).text().trim()
+    });
+    
+  });
+  
+  return result;
+}
+
+
 const epost = ($,$info,$list) => {
   const sender = string.unicode16ToStr($info.find('td').eq(0).html()).split('<br>');
   const recipient = string.unicode16ToStr($info.find('td').eq(1).html()).split('<br>');
@@ -64,5 +96,7 @@ const epost = ($,$info,$list) => {
   return result;
 }
 
+
+exports.hanjin = hanjin;
 exports.epost = epost;
 exports.cjLogistics = cjLogistics;
