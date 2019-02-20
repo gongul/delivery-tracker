@@ -7,7 +7,7 @@ const boot = require('loopback-boot');
 
 const instanceId = uuid.v4();
 const cpuCount = os.cpus().length;
-const workerCount = cpuCount / 2;
+const workerCount = cpuCount / 4;
 
 const master = () => {
   const workerMsgListener = (msg) => {
@@ -56,11 +56,17 @@ if(cluster.isMaster){
 }else if(cluster.isWorker){
   const app = module.exports = require("./app.js");
 
+  const builder =  app.loopback.registry.modelBuilder;
+  builder.define("Login",{
+    "id": Number,
+    "password": String
+  });
+
   worker();
   
   boot(app, __dirname, (err) => {
     if (err) throw err;
-
+    
     
     if (require.main === module){
       app.start();

@@ -1,0 +1,27 @@
+{
+    "name": "CarrierMapping",
+    "base": "PersistedModel",
+    "options": {
+    },
+    "properties": {
+        
+    },
+    "validations": [],
+    "relations": {
+        "user": {
+            "type": "belongsTo",
+            "model": "user",
+            "foreignKey": "userId"
+        },
+        "carrier": {
+            "type": "belongsTo",
+            "model": "carrier",
+            "foreignKey": "carrierId"
+        }
+    },
+    "acls": [],
+    "methods": {
+     
+    }
+  }
+  

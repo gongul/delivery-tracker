@@ -1,0 +1,103 @@
+{
+  "name": "user",
+  "base": "User",
+  "idInjection": false,
+  "inheritAcls" : false,
+  "options": {
+    "table": "User"
+  },
+  "hidden": [],
+  "properties": {
+    "id": {
+      "type": "number",
+      "id": true,
+      "mysql": {
+        "columnName": "id",
+        "dataType": "int",
+        "dataLength": 11,
+        "nullable": "N"
+      }
+    },
+    "email": {
+      "type": "string",
+      "required": true,
+      "index": {
+        "unique": true
+      },
+      "mysql": {
+        "columnName": "email",
+        "dataType": "varchar",
+        "dataLength": 50,
+        "nullable": "N"
+      }
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "mysql": {
+        "columnName": "name",
+        "dataType": "VARCHAR",
+        "dataLength": 20,
+        "nullable": "N"
+      }
+    },
+    "tel": {
+      "type": "string",
+      "mysql": {
+        "columnName": "tel",
+        "dataType": "VARCHAR",
+        "dataLength": 20,
+        "nullable": "Y"
+      }
+    },
+    "password": {
+      "type": "string",
+      "required": true,
+      "mysql": {
+        "columnName": "tel",
+        "dataType": "VARCHAR",
+        "dataLength": 50,
+        "nullable": "N"
+      }
+    }
+  },
+  "validations": [],
+  "relations": {
+    "carriers": {
+      "type": "hasMany",
+      "model": "carrier",
+      "foreignKey": "userId",
+      "through": "CarrierMaping"
+    },
+    "accessTokens": {
+      "type": "hasMany",
+      "model": "AccessToken",
+      "foreignKey": "userId",
+      "options": {
+        "disableInclude": true
+      }
+    }
+  },
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "accessType": "READ"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "accessType": "WRITE"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {
+   
+  }
+}

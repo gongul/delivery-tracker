@@ -1,8 +1,7 @@
-const axios = require("axios");
+const axios = require("../../lib/axios");
 const qs = require('querystring');
 const cheerio = require("cheerio");
-const string = require("./string.js");
-const deliveryParser = require('./delivery-parser.js');
+const deliveryParser = require('./delivery-parser');
 const iconv = require('iconv-lite');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -62,12 +61,12 @@ const getTrack = {
         return callback({message: '운송장 번호는 10자리 혹은 12자리입니다.'});
       }
       
-      const res = await axios.post(`https://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num=502437969073`,
+      const res = await axios.post(`https://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num=${trackId}`,
       qs.stringify({
         sel_wbl_num1: 0,
-        wbl_num: 502437969073
-      }),{encoding:false});
-   
+        wbl_num: trackId
+      }),{isEncoding:false});
+
       const encodingHtml = iconv.decode(res.data, 'EUC-KR'); // 획득한 charset값으로 body를 디코딩
       const $ = cheerio.load(encodingHtml);
 

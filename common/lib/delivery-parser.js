@@ -36,9 +36,9 @@ const cjLogistics = (data) => {
 }
 
 const hanjin = ($,$info,$list) => {
-  const sender = $info.eq(3).find('span').text();
-  const recipient = $info.eq(4).find('span').text();
-  
+  const sender = $info.eq(3).text().replace(/\s/g,"");
+  const recipient = $info.eq(4).text().replace(/\s/g,"");
+
   let result = {
     deliveryInfo : {
       sender: sender,
@@ -87,8 +87,8 @@ const epost = ($,$info,$list) => {
       message: '',
       time: `${$td.eq(0).text()} ${$td.eq(1).text()}:00+09:00`,
       location: $td.eq(2).text(),
-      status: $td.eq(3).text().trim(),
-      action: $td.eq(3).text().trim()
+      status: $td.eq(3).text().replace(/\s/g,""),
+      action: $td.eq(3).text().replace(/\s/g,"")
     });
     
   });
