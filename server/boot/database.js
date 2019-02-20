@@ -3,7 +3,7 @@ const schema = require('../../common/models/carrier.json');
 module.exports = (app) => {
   const carrier = app.models.carrier;
 
-  var User = app.models.GGG;
+  // var User = app.models.GGG;
   var Role = app.models.Role;
   var RoleMapping = app.models.RoleMapping;
 

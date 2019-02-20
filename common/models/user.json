@@ -64,10 +64,8 @@
   "validations": [],
   "relations": {
     "carriers": {
-      "type": "hasMany",
-      "model": "carrier",
-      "foreignKey": "userId",
-      "through": "CarrierMaping"
+      "type": "hasAndBelongsToMany",
+      "model": "carrier"
     },
     "accessTokens": {
       "type": "hasMany",
