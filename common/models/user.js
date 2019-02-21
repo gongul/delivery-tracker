@@ -1,7 +1,12 @@
 'use strict';
 
 function GeneralUser(User){
-    // User.beforeRemote('login',(ctx,model,next) => {
+    
+    // User.observe('after save',(ctx, next) => {
+    //     console.log(ctx);
+    //     next();
+    // })
+    // User.beforeRemote('login',(ctx,instance,next) => {
     //     const credentials = ctx.args.credentials;
 
     //    if(!isCredential(credentials)) return next();

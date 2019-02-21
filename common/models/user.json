@@ -67,7 +67,7 @@
       "type": "hasMany",
       "model": "carrier",
       "foreignKey": "userId",
-      "through": "CarrierMaping"
+      "through": "CarrierMapping"
     },
     "accessTokens": {
       "type": "hasMany",

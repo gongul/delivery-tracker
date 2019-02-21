@@ -1,0 +1,38 @@
+{
+  "ids": {
+    "User": 1,
+    "AccessToken": 1,
+    "ACL": 1,
+    "RoleMapping": 2,
+    "Role": 2,
+    "carrier": 4,
+    "user": 2,
+    "CarrierMapping": 4,
+    "delivery": 1
+  },
+  "models": {
+    "User": {},
+    "AccessToken": {},
+    "ACL": {},
+    "RoleMapping": {
+      "1": "{\"principalType\":\"USER\",\"principalId\":\"1\",\"roleId\":1,\"id\":1}"
+    },
+    "Role": {
+      "1": "{\"name\":\"admin\",\"created\":\"2019-02-21T03:15:59.863Z\",\"modified\":\"2019-02-21T03:15:59.863Z\",\"id\":1}"
+    },
+    "carrier": {
+      "kr.cjlogistics": "{\"id\":\"kr.cjlogistics\",\"name\":\"CJ 택배\",\"tel\":\"1588-1255\"}",
+      "kr.epost": "{\"id\":\"kr.epost\",\"name\":\"우체국 택배\",\"tel\":\"1588-1300\"}",
+      "kr.hanjin": "{\"id\":\"kr.hanjin\",\"name\":\"한진 택배\",\"tel\":\"1588-0011\"}"
+    },
+    "user": {
+      "1": "{\"email\":\"admin@admin.com\",\"name\":\"admin\",\"tel\":\"xxxx-xxxx\",\"password\":\"$2a$10$0IqoArRo/.zL2YlS5cxQnun6voV85yof/UW1HbifQisjqj3wAXnJm\",\"id\":1}"
+    },
+    "CarrierMapping": {
+      "1": "{\"userId\":1,\"carrierId\":\"kr.cjlogistics\",\"id\":1}",
+      "2": "{\"userId\":1,\"carrierId\":\"kr.epost\",\"id\":2}",
+      "3": "{\"userId\":1,\"carrierId\":\"kr.hanjin\",\"id\":3}"
+    },
+    "delivery": {}
+  }
+}
