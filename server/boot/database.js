@@ -9,7 +9,7 @@ module.exports = async (app) => {
   const result = await Carrier.count();
 
   User.nestRemoting('carriers');
-  
+
   if(result !== 0) return;
   
   Carrier.create([
@@ -26,7 +26,7 @@ module.exports = async (app) => {
 
 
   User.create([
-    {"email":"admin@admin.com","name":"admin","tel":"xxxx-xxxx","password":"admin"}
+    {"email":"admin@admin.com","name":"admin","tel":"xxxx-xxxx","password":"admin","emailVerified":true}
   ], function(err, users) {
     if (err) throw err;
 

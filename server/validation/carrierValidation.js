@@ -23,10 +23,10 @@ module.exports = (app) => {
   //   // token.create()
   // });
 
-  app.use(function(req, res, next) {
+  // app.use(function(req, res, next) {
     // Make sure this middleware is registered after loopback.token
     // console.log(app);
-    return next();
+    // return next();
   //   var token = req.accessToken;
   //   if (!token) {
   //       return next();
@@ -38,7 +38,7 @@ module.exports = (app) => {
   //   req.accessToken.created = now;
   //   req.accessToken.ttl     = 604800; //one week
   //   req.accessToken.save(next);
-  });
+  // });
 
   app.use(`${config.restApiRoot}/carriers/:id/tracks/`,(req,res,next) => {
     const carrier = app.models.carrier;

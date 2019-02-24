@@ -1,7 +1,29 @@
 'use strict';
+const path = require('path');
 
 function GeneralUser(User){
-    
+    User.afterRemote('create', function(context, userInstance, next) {
+        var options = {
+            type: 'email',
+            to: userInstance.email,
+            from: 'projectgongul@gmail.com',
+            subject: 'Thanks for registering.',
+            redirect: '/verified',
+            restApiRoot: "/api",
+            user: User
+        };
+
+
+        userInstance.verify(options, function(err, response) {
+            if (err) return next(err);
+
+            context.res.json({"message":"Please check your email and click on the verification link before logging in"});
+        });
+    });
+
+    User.afterRemote('prototype.verify', function(context, user, next) {
+        context.res.json({"message":"Please check your email and click on the verification link before logging in"});
+    });
     // User.observe('after save',(ctx, next) => {
     //     console.log(ctx);
     //     next();
