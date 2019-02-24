@@ -1,44 +1,57 @@
 const schema = require('../../common/models/carrier.json');
 
-module.exports = (app) => {
-  const carrier = app.models.carrier;
+module.exports = async (app) => {
+  const Carrier = app.models.carrier;
+  const User = app.models.user;
+  const Role = app.models.Role;
+  const RoleMapping = app.models.RoleMapping;
+  
+  const result = await Carrier.count();
 
-  // var User = app.models.GGG;
-  var Role = app.models.Role;
-  var RoleMapping = app.models.RoleMapping;
+  User.nestRemoting('carriers');
+
+  if(result !== 0) return;
+  
+  Carrier.create([
+    {id:"kr.cjlogistics",name:"CJ 택배",tel:"1588-1255"},
+    {id:"kr.epost",name:"우체국 택배",tel:"1588-1300"},
+    {id:"kr.hanjin",name:"한진 택배",tel:"1588-0011"}
+  ],(err,carriers) => {
+    if (err) throw err;
+
+    console.log("택배사 등록 완료.");
+    console.log(carriers);
+   
+  });
 
 
-  // Role.create({
-  //   name: 'admin'
-  // }, (err, role) => {
-  //   if (err) throw err;
+  User.create([
+    {"email":"admin@admin.com","name":"admin","tel":"xxxx-xxxx","password":"admin","emailVerified":true}
+  ], function(err, users) {
+    if (err) throw err;
 
-  //   role.principals.create({
-  //     principalType: RoleMapping.USER,
-  //     principalId: "1"
-  //   },(err, principal) => {
-  //     if (err) throw err;
+      
+    console.log("기본 유저 등록 완료.");
+    console.log(users);
+    
+    Role.create({
+      name: 'admin'
+    }, (err, role) => {
+      if (err) throw err;
+  
+      console.log("권한 어드민 생성 완료.");
+      
+      role.principals.create({
+        principalType: RoleMapping.USER,
+        principalId: users[0].id
+      },(err, principal) => {
+        if (err) throw err;
 
-  //     console.log("Admin 등록 완료.");
-  //   });
-  // });
+        console.log("어드민 유저 둥록 완료.");
+      });
+    });
 
-
-  // User.create([
-  //   {"email":"admin@admin.com","name":"admin","tel":"xxxx-xxxx","password":"admin"}
-  // ], function(err, users) {
-  //   if (err) throw err;
-
-  //   users[0].carriers.create([
-  //     {id:"kr.cjlogistics",name:"CJ 택배",tel:"1588-1255"},
-  //     {id:"kr.epost",name:"우체국 택배",tel:"1588-1300"},
-  //     {id:"kr.hanjin",name:"한진 택배",tel:"1588-0011"}
-  //   ],(err,obj) => {
-  //     if (err) throw err;
-
-  //     console.log(obj)
-  //   })
-  // });
+  });
 
 }
 

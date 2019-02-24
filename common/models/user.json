@@ -2,28 +2,20 @@
   "name": "user",
   "base": "User",
   "idInjection": false,
-  "inheritAcls" : false,
   "options": {
     "table": "User"
   },
-  "hidden": [],
+  "hidden": [
+    "id",
+    "realm",
+    "username",
+    "emailVerified"
+  ],
   "properties": {
-    "id": {
-      "type": "number",
-      "id": true,
-      "mysql": {
-        "columnName": "id",
-        "dataType": "int",
-        "dataLength": 11,
-        "nullable": "N"
-      }
-    },
     "email": {
       "type": "string",
+      "id": true,
       "required": true,
-      "index": {
-        "unique": true
-      },
       "mysql": {
         "columnName": "email",
         "dataType": "varchar",
@@ -64,13 +56,15 @@
   "validations": [],
   "relations": {
     "carriers": {
-      "type": "hasAndBelongsToMany",
-      "model": "carrier"
+      "type": "hasMany",
+      "model": "carrier",
+      "foreignKey": "userEmail",
+      "through": "CarrierMapping"
     },
     "accessTokens": {
       "type": "hasMany",
       "model": "AccessToken",
-      "foreignKey": "userId",
+      "foreignKey": "userEmail",
       "options": {
         "disableInclude": true
       }
@@ -78,16 +72,16 @@
   },
   "acls": [
     {
+      "accessType": "READ",
       "principalType": "ROLE",
       "principalId": "$everyone",
-      "permission": "ALLOW",
-      "accessType": "READ"
+      "permission": "ALLOW"
     },
     {
+      "accessType": "WRITE",
       "principalType": "ROLE",
       "principalId": "$everyone",
-      "permission": "ALLOW",
-      "accessType": "WRITE"
+      "permission": "ALLOW"
     },
     {
       "principalType": "ROLE",
@@ -95,7 +89,5 @@
       "permission": "ALLOW"
     }
   ],
-  "methods": {
-   
-  }
+  "methods": {}
 }

@@ -19,9 +19,14 @@ app.start = function() {
 
 
 app.validation = () => {
-  const validationFiles = fileHelper.getFileNames(`${__dirname}/validation`);
- 
+  const interceptorFiles = fileHelper.getFileNames(`${__dirname}/boot/interceptor`);
+  const validationFiles  = fileHelper.getFileNames(`${__dirname}/validation`);
+
   for(const file of validationFiles){
+    require(file)(app);
+  }
+
+  for(const file of interceptorFiles){
     require(file)(app);
   }
 }

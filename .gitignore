@@ -6,6 +6,7 @@ node_modules
 
 # database config file
 database-init.js
+datasources.json
 
 # test file
 test.js

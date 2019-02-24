@@ -24,7 +24,7 @@
       "user": {
         "type": "belongsTo",
         "model": "user",
-        "foreignKey": "userId"
+        "foreignKey": "userEmail"
       }
     }
   },
@@ -48,7 +48,8 @@
         "sharedMethods": {
           "*": true,
           "find": true,
-          "findById": true
+          "findById": true,
+          "prototype.__get__users": true
         }
       }
     }
@@ -57,6 +58,7 @@
     "dataSource": "db",
     "public": true,
     "options": {
+      "emailVerificationRequired": true,
       "remoting": {
         "sharedMethods": {
           "*": true,
@@ -66,9 +68,23 @@
           "deleteById": true,
           "changePassword": true,
           "login": true,
-          "prototype.updateAttributes": true
+          "prototype.patchAttributes": true,
+          "prototype.verify": true,
+          "confirm": true,
+          "resetPassword": true
         }
       }
     }
+  },
+  "CarrierMapping": {
+    "dataSource": "db",
+    "public": false
+  },
+  "delivery": {
+    "dataSource": "db",
+    "public": false
+  },
+  "Email": {
+    "dataSource": "Email"
   }
 }

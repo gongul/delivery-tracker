@@ -40,9 +40,18 @@
   },
   "validations": [],
   "relations": {
+    "users": {
+      "type": "hasMany",
+      "model": "user",
+      "foreignKey": "carrierId",
+      "through": "CarrierMapping"
+    },
+    "delivery": {
+      "type": "hasMany",
+      "model": "delivery",
+      "foreignKey": "carrierId"
+    }
   },
   "acls": [],
-  "methods": {
-   
-  }
+  "methods": {}
 }

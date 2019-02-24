@@ -1,0 +1,31 @@
+{
+  "name": "delivery",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "table": "Delivery"
+  },
+  "properties": {
+    "invoic_number": {
+      "type": "string",
+      "id": true,
+      "required": true,
+      "mysql": {
+        "columnName": "invoic_number",
+        "dataType": "VARCHAR",
+        "dataLength": 20,
+        "nullable": "N"
+      }
+    }
+  },
+  "validations": [],
+  "relations": {
+    "carriers": {
+      "type": "belongsTo",
+      "model": "carrier",
+      "foreignKey": "carrierId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
