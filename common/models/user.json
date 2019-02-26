@@ -64,7 +64,7 @@
     "accessTokens": {
       "type": "hasMany",
       "model": "AccessToken",
-      "foreignKey": "userEmail",
+      "foreignKey": "userId",
       "options": {
         "disableInclude": true
       }
@@ -79,6 +79,12 @@
     },
     {
       "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "$everyone",
       "permission": "ALLOW"

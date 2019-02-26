@@ -24,7 +24,7 @@
       "user": {
         "type": "belongsTo",
         "model": "user",
-        "foreignKey": "userEmail"
+        "foreignKey": "userId"
       }
     }
   },

@@ -6,11 +6,19 @@ module.exports = (app) => {
         res.render('verified');
     });
 
+    app.get('/reset-password', function(req, res, next) {
+        if (!req.accessToken) return res.sendStatus(401);
+        res.render('password-reset', {
+          redirectUrl: '/api/users/reset-password?access_token='+
+            req.accessToken.id
+        });
+    });
+
     User.observe('after save',(ctx, next) => {
         CarrierMapping.create([
-          {"userId":ctx.instance.id,"carrierId":"kr.cjlogistics"},
-          {"userId":ctx.instance.id,"carrierId":"kr.epost"},
-          {"userId":ctx.instance.id,"carrierId":"kr.hanjin"},
+          {"userEmail":ctx.instance.id,"carrierId":"kr.cjlogistics"},
+          {"userEmail":ctx.instance.id,"carrierId":"kr.epost"},
+          {"userEmail":ctx.instance.id,"carrierId":"kr.hanjin"},
         ])
 
         next();

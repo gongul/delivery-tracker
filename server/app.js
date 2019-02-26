@@ -4,6 +4,8 @@ const app = loopback();
 
 app.start = function() {
     // start the web server
+  app.use(loopback.token());
+
   return app.listen(function() {
     app.emit('started');
     const baseUrl = app.get('url').replace(/\/$/, '');

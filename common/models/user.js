@@ -24,6 +24,22 @@ function GeneralUser(User){
     User.afterRemote('prototype.verify', function(context, user, next) {
         context.res.json({"message":"Please check your email and click on the verification link before logging in"});
     });
+
+    User.on('resetPasswordRequest', function(info) {
+        var url = 'http://' + '0.0.0.0' + ':' + '3000' + '/reset-password';
+        var html = 'Click <a href="' + url + '?access_token=' +
+            info.accessToken.id + '">here</a> to reset your password';
+        //'here' in above html is linked to : 'http://<host:port>/reset-password?access_token=<short-lived/temporary access token>'
+        User.app.models.Email.send({
+            to: info.email,
+            from: 'projectgongul@gmail.com',
+            subject: 'Password reset',
+            html: html
+        }, function(err) {
+            if (err) return console.log('> error sending password reset email');
+            console.log('> sending password reset email to:', info.email);
+        });
+    });
     // User.observe('after save',(ctx, next) => {
     //     console.log(ctx);
     //     next();

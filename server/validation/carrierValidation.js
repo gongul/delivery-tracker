@@ -24,6 +24,8 @@ module.exports = (app) => {
   // });
 
   // app.use(function(req, res, next) {
+    // console.log(req.accessToken);
+    // return next();
     // Make sure this middleware is registered after loopback.token
     // console.log(app);
     // return next();

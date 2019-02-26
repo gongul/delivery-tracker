@@ -58,7 +58,6 @@ if(cluster.isMaster){
 }else if(cluster.isWorker){
   const app = module.exports = require("./app.js");
 
- 
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'ejs');
   
