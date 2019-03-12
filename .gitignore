@@ -14,6 +14,10 @@ test.js
 # ssl 
 ssl
 
+# local data
+mydata.json
+
+# etc
 .editorconfig
 .eslintignore
 .eslintrc

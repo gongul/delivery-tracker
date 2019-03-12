@@ -2,9 +2,12 @@ const loopback = require('loopback');
 const fileHelper = require("./lib/fileHelper.js");
 const app = loopback();
 
+app.token = function(){
+  app.use(loopback.token());
+}
+
 app.start = function() {
     // start the web server
-  app.use(loopback.token());
 
   return app.listen(function() {
     app.emit('started');
@@ -18,19 +21,5 @@ app.start = function() {
   });
 };
 
-
-
-app.validation = () => {
-  const interceptorFiles = fileHelper.getFileNames(`${__dirname}/boot/interceptor`);
-  const validationFiles  = fileHelper.getFileNames(`${__dirname}/validation`);
-
-  for(const file of validationFiles){
-    require(file)(app);
-  }
-
-  for(const file of interceptorFiles){
-    require(file)(app);
-  }
-}
 
 module.exports = app;

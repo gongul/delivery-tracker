@@ -8,8 +8,6 @@ module.exports = async (app) => {
   
   const result = await Carrier.count();
 
-  User.nestRemoting('carriers');
-
   if(result !== 0) return;
   
   Carrier.create([

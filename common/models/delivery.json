@@ -6,7 +6,7 @@
     "table": "Delivery"
   },
   "properties": {
-    "invoic_number": {
+    "invoicNumber": {
       "type": "string",
       "id": true,
       "required": true,
@@ -24,6 +24,10 @@
       "type": "belongsTo",
       "model": "carrier",
       "foreignKey": "carrierId"
+    },
+    "users": {
+      "type": "hasAndBelongsToMany",
+      "model": "user"
     }
   },
   "acls": [],

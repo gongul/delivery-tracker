@@ -58,6 +58,7 @@ if(cluster.isMaster){
 }else if(cluster.isWorker){
   const app = module.exports = require("./app.js");
 
+  app.token();
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'ejs');
   
@@ -74,10 +75,9 @@ if(cluster.isMaster){
   boot(app, __dirname, (err) => {
     if (err) throw err;
     
-    
     if (require.main === module){
       app.start();
-      app.validation();
+
     }
   });
 }

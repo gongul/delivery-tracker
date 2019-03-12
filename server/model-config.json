@@ -49,7 +49,9 @@
           "*": true,
           "find": true,
           "findById": true,
-          "prototype.__get__users": true
+          "prototype.__create__delivery": true,
+          "prototype.__get__delivery": true,
+          "prototype.__findById__delivery": false
         }
       }
     }
@@ -61,17 +63,20 @@
       "emailVerificationRequired": true,
       "remoting": {
         "sharedMethods": {
-          "*": true,
+          "*": false,
+          "getAllDelivery": true,
+          "getDelivery": true,
           "create": true,
           "find": true,
           "findById": true,
           "deleteById": true,
           "changePassword": true,
           "login": true,
-          "prototype.patchAttributes": true,
-          "prototype.verify": true,
           "confirm": true,
-          "resetPassword": true
+          "resetPassword": true,
+          "setPassword": true,
+          "prototype.patchAttributes": true,
+          "prototype.verify": true
         }
       }
     }

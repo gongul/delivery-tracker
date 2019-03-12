@@ -45,6 +45,10 @@
     "loopback#urlNotFound": {}
   },
   "final:after": {
-    "strong-error-handler": {}
+    "./boot/exception/index": {},
+    "strong-error-handler": {
+      "params": {
+      }
+    }
   }
 }

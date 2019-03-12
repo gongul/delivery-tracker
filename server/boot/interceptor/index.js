@@ -1,0 +1,4 @@
+module.exports = (app) => {
+    const user = require('./user')(app);
+    const carrier = require('./carrier')(app);
+}
