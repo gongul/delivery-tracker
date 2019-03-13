@@ -89,6 +89,10 @@
     "dataSource": "db",
     "public": false
   },
+  "DeliveryMapping": {
+    "dataSource": "db",
+    "public": false
+  },
   "Email": {
     "dataSource": "Email"
   }

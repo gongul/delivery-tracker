@@ -1,14 +1,13 @@
 {
   "name": "delivery",
   "base": "PersistedModel",
-  "idInjection": false,
+  "idInjection": true,
   "options": {
     "table": "Delivery"
   },
   "properties": {
     "invoicNumber": {
       "type": "string",
-      "id": true,
       "required": true,
       "mysql": {
         "columnName": "invoic_number",
@@ -25,9 +24,10 @@
       "model": "carrier",
       "foreignKey": "carrierId"
     },
-    "users": {
-      "type": "hasAndBelongsToMany",
-      "model": "user"
+    "deliveryMapping": {
+      "type": "hasMany",
+      "model": "DeliveryMapping",
+      "foreignKey": "deliveryId"
     }
   },
   "acls": [],

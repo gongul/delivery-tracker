@@ -57,7 +57,7 @@ const getTrack = {
         return callback(null,{'message':'해당 운송장이 존재하지 않습니다.'});
       }
       
-      const result = deliveryParser.epost($,$trackInfo,$trackList);
+      const result = deliveryParser.epost($,$trackInfo,$trackList,trackId);
       callback(null,result);
     },
     "hanjin": async (trackId,callback) => {
@@ -88,7 +88,7 @@ const getTrack = {
         return callback(null,{'message':'해당 운송장이 존재하지 않습니다.'});
       } 
 
-      const result = deliveryParser.hanjin($,$trackInfo,$trackList);
+      const result = deliveryParser.hanjin($,$trackInfo,$trackList,trackId);
 
       callback(null,result);
     }

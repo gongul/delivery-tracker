@@ -1,0 +1,22 @@
+{
+    "name": "DeliveryMapping",
+    "base": "PersistedModel",
+    "options": {},
+    "properties": {},
+    "validations": [],
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "user",
+        "foreignKey": "userEmail"
+      },
+      "delivery": {
+        "type": "belongsTo",
+        "model": "delivery",
+        "foreignKey": "deliveryId"
+      }
+    },
+    "acls": [],
+    "methods": {}
+  }
+  

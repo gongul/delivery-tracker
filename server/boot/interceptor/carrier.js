@@ -49,11 +49,40 @@ module.exports = (app) => {
         });
     });
 
-    Carrier.afterRemote('getDelivery',function(ctx,instance,next) {
+    Carrier.afterRemote('getDelivery',async function(ctx,instance) {
         const {id,fk} = ctx.args; 
 
-        if(!ctx.req.accessToken) return next();
+        async function createDeliveryMapping(delivery){
+            if(!ctx.req.accessToken) return;
         
+            const data = await delivery.deliveryMapping.create({userEmail:ctx.req.accessToken.userId});
+
+            console.log("성공");
+            return data;
+        }   
+
+        try{
+            const hasDelivery = await Delivery.findOne({where:{invoicNumber:fk,carrierId:id}});  
+
+            if(hasDelivery){
+                const hasDeliveryMapping = await hasDelivery.deliveryMapping.findOne({});
+
+                if(!hasDeliveryMapping) await createDeliveryMapping(hasDelivery);
+
+                return;
+            }
+
+            const delivery = await Delivery.create({invoicNumber:fk,carrierId:id});
+            const deliveryMapping = await createDeliveryMapping(delivery);
+
+        }catch(e){
+            console.log(e);
+            console.log("유저 택배 송장번호 저장 실패");
+        }
+
+        // const err = new Errors.NotFoundError();
+
+        // throw err;
         // Delivery.findOne({where:{invoicNumber:fk,carrierId:id}},(err,delivery) => {
         //     if(err) return next(err);
 

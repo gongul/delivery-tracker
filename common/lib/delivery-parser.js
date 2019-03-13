@@ -1,4 +1,5 @@
 const string = require("./string.js");
+const DeliveryFrame = require('./delivery-frame');
 
 const cjLogistics = (data) => {
   const STATUS_MAP = {
@@ -16,7 +17,8 @@ const cjLogistics = (data) => {
   let result = {
     deliveryInfo : {
       sender: data.parcelResultMap.resultList[0].sendrNm,
-      recipient: data.parcelResultMap.resultList[0].rcvrNm
+      recipient: data.parcelResultMap.resultList[0].rcvrNm,
+      invoicNumber: data.parcelResultMap.paramInvcNo
     },
     deliveryDetailInfo : []
   }
@@ -32,10 +34,12 @@ const cjLogistics = (data) => {
   }
   
   
-  return result;
+  const delivery = new DeliveryFrame(result);
+
+  return delivery;
 }
 
-const hanjin = ($,$info,$list) => {
+const hanjin = ($,$info,$list,trackId) => {
   const sender = $info.eq(3).text().replace(/\s/g,"");
   const recipient = $info.eq(4).text().replace(/\s/g,"");
 
@@ -43,6 +47,7 @@ const hanjin = ($,$info,$list) => {
     deliveryInfo : {
       sender: sender,
       recipient: recipient,
+      invoicNumber: trackId
     },
     deliveryDetailInfo : []
   }
@@ -63,11 +68,13 @@ const hanjin = ($,$info,$list) => {
     
   });
   
-  return result;
+  const delivery = new DeliveryFrame(result);
+
+  return delivery;
 }
 
 
-const epost = ($,$info,$list) => {
+const epost = ($,$info,$list,trackId) => {
   const sender = string.unicode16ToStr($info.find('td').eq(0).html()).split('<br>');
   const recipient = string.unicode16ToStr($info.find('td').eq(1).html()).split('<br>');
   
@@ -75,6 +82,7 @@ const epost = ($,$info,$list) => {
     deliveryInfo : {
       sender: sender,
       recipient: recipient,
+      invoicNumber: trackId
     },
     deliveryDetailInfo : []
   }
@@ -93,7 +101,9 @@ const epost = ($,$info,$list) => {
     
   });
   
-  return result;
+  const delivery = new DeliveryFrame(result);
+
+  return delivery;
 }
 
 
