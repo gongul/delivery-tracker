@@ -18,7 +18,8 @@ const cjLogistics = (data) => {
     deliveryInfo : {
       sender: data.parcelResultMap.resultList[0].sendrNm,
       recipient: data.parcelResultMap.resultList[0].rcvrNm,
-      invoicNumber: data.parcelResultMap.paramInvcNo
+      invoicNumber: data.parcelResultMap.paramInvcNo,
+      finalState: ''
     },
     deliveryDetailInfo : []
   }
@@ -33,7 +34,10 @@ const cjLogistics = (data) => {
     });
   }
   
-  
+  if(result.deliveryDetailInfo.length != 0){
+    result.deliveryInfo.finalState = result.deliveryDetailInfo[result.deliveryDetailInfo.length-1].status;
+  }
+
   const delivery = new DeliveryFrame(result);
 
   return delivery;
@@ -47,7 +51,8 @@ const hanjin = ($,$info,$list,trackId) => {
     deliveryInfo : {
       sender: sender,
       recipient: recipient,
-      invoicNumber: trackId
+      invoicNumber: trackId,
+      finalState: ''
     },
     deliveryDetailInfo : []
   }
@@ -68,6 +73,9 @@ const hanjin = ($,$info,$list,trackId) => {
     
   });
   
+  if(result.deliveryDetailInfo.length != 0){
+    result.deliveryInfo.finalState = result.deliveryDetailInfo[result.deliveryDetailInfo.length-1].status;
+  }
   const delivery = new DeliveryFrame(result);
 
   return delivery;
@@ -82,7 +90,8 @@ const epost = ($,$info,$list,trackId) => {
     deliveryInfo : {
       sender: sender,
       recipient: recipient,
-      invoicNumber: trackId
+      invoicNumber: trackId,
+      finalState: ''
     },
     deliveryDetailInfo : []
   }
@@ -100,6 +109,10 @@ const epost = ($,$info,$list,trackId) => {
     });
     
   });
+  
+  if(result.deliveryDetailInfo.length != 0){
+    result.deliveryInfo.finalState = result.deliveryDetailInfo[result.deliveryDetailInfo.length-1].status;
+  }
   
   const delivery = new DeliveryFrame(result);
 

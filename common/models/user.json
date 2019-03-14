@@ -61,6 +61,11 @@
       "foreignKey": "userEmail",
       "through": "CarrierMapping"
     },
+    "deliveryMapping": {
+      "type": "hasMany",
+      "model": "DeliveryMapping",
+      "foreignKey": "userEmail"
+    },
     "accessTokens": {
       "type": "hasMany",
       "model": "AccessToken",

@@ -12,7 +12,7 @@ const getTrack = {
     "cjlogistics" : async (trackId,callback) => {
       if(!/^(\d{10}(\d{2})?)?$/.test(trackId)) {
         const err = new Errors.DeliveryValidationError('운송장 번호는 10자리 혹은 12자리입니다.');
-        return callback(err,null);
+        throw err;
       }
       
       let res = await axios.get('https://www.cjlogistics.com/ko/tool/parcel/tracking');
@@ -30,18 +30,18 @@ const getTrack = {
             });
       
       if(res.data.parcelResultMap.resultList.length == 0){
-        return callback(null,{'message':'해당 운송장이 존재하지 않습니다.'});
+        return {'message':'해당 운송장이 존재하지 않습니다.'};
       }
       
       res.data.parcelDetailResultMap.resultList.reverse();
       const result = deliveryParser.cjLogistics(res.data);
       
-      callback(null,result);
+      return result;
     },
     "epost" : async (trackId,callback) => {
       if(!/^(\d{13})?$/.test(trackId)) {
         const err = new Errors.DeliveryValidationError('운송장 번호는 13자리입니다.');
-        return callback(err,null);
+        throw err;
       }
 
       const res = await axios.post('https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm?displayHeader=N', qs.stringify({
@@ -54,21 +54,22 @@ const getTrack = {
       const $trackInfo = $('.table_col').eq(0).find('tbody').find('tr');
       
       if($trackList.length == 0){
-        return callback(null,{'message':'해당 운송장이 존재하지 않습니다.'});
+        return {'message':'해당 운송장이 존재하지 않습니다.'};
       }
       
       const result = deliveryParser.epost($,$trackInfo,$trackList,trackId);
-      callback(null,result);
+
+      return result;
     },
     "hanjin": async (trackId,callback) => {
       if(!/^(\d{10}(\d{2})?)?$/.test(trackId)) {
         const err = new Errors.DeliveryValidationError('운송장 번호는 10자리 혹은 12자리입니다.');
-        return callback(err,null);
+        throw err;
       }
       
       if(parseInt(trackId.substring(0, trackId.length - 1)) % 7 !== parseInt(trackId.substring(trackId.length - 1))){
         const err = new Errors.DeliveryValidationError('잘못된 운송장 번호입니다.');
-        return callback(err,null);
+        throw err;
       }
 
       const res = await axios.post(`https://www.hanjin.co.kr/Delivery_html/inquiry/result_waybill.jsp?wbl_num=${trackId}`,
@@ -85,16 +86,16 @@ const getTrack = {
       const $trackList = $table.eq(1).find('tbody').find('tr');
 
       if($('.resulte_context').find('p.noData').length == 1){
-        return callback(null,{'message':'해당 운송장이 존재하지 않습니다.'});
+        return {'message':'해당 운송장이 존재하지 않습니다.'};
       } 
 
       const result = deliveryParser.hanjin($,$trackInfo,$trackList,trackId);
 
-      callback(null,result);
+      return result;
     }
   },
   null : (trackId,callback) => {
-    callback("해당 택배사는 존재하지 않습니다.");
+    return;
   }
   
 }

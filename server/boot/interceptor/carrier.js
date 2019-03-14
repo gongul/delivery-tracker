@@ -13,16 +13,16 @@ module.exports = (app) => {
             "required": true
         },
         {
-            "arg": "fk",
+            "arg": "invoicNumber",
             "type": "string",
-            "description": "delivery의 외부키",
+            "description": "송장번호",
             "required": true
         }],
         description: "Delivery Tracking",
         returns: {type: 'Object',root: true},
         http: {
           "verb": "get",
-          "path": "/:id/delivery/:fk"
+          "path": "/:id/delivery/:invoicNumber"
         }
     });
 
@@ -49,63 +49,37 @@ module.exports = (app) => {
         });
     });
 
-    Carrier.afterRemote('getDelivery',async function(ctx,instance) {
-        const {id,fk} = ctx.args; 
+    Carrier.afterRemote('getDelivery',(ctx,instance,next) => {
+        const {id,invoicNumber} = ctx.args;
+        const accessToken = ctx.req.accessToken;
+
+        Carrier.emit('deliveryMapping',{id:id,invoicNumber:invoicNumber,accessToken:accessToken});
+
+        return next();
+    });
+
+    Carrier.on('deliveryMapping',async function(info) {
+        const {id,invoicNumber,accessToken} = info; 
 
         async function createDeliveryMapping(delivery){
-            if(!ctx.req.accessToken) return;
+            if(!accessToken) return;
         
-            const data = await delivery.deliveryMapping.create({userEmail:ctx.req.accessToken.userId});
+            const data = await delivery.deliveryMapping.create({userEmail:accessToken.userId});
 
-            console.log("성공");
             return data;
         }   
 
         try{
-            const hasDelivery = await Delivery.findOne({where:{invoicNumber:fk,carrierId:id}});  
+            const hasDelivery = await Delivery.findOne({where:{invoicNumber:invoicNumber,carrierId:id}});  
 
-            if(hasDelivery){
-                const hasDeliveryMapping = await hasDelivery.deliveryMapping.findOne({});
-
-                if(!hasDeliveryMapping) await createDeliveryMapping(hasDelivery);
-
-                return;
-            }
-
-            const delivery = await Delivery.create({invoicNumber:fk,carrierId:id});
-            const deliveryMapping = await createDeliveryMapping(delivery);
+            if(!hasDelivery) return;
+            
+            const hasDeliveryMapping = await hasDelivery.deliveryMapping.findOne({where:{userEmail:accessToken.userId}});
+            if(!hasDeliveryMapping) await createDeliveryMapping(hasDelivery);
 
         }catch(e){
-            console.log(e);
             console.log("유저 택배 송장번호 저장 실패");
         }
-
-        // const err = new Errors.NotFoundError();
-
-        // throw err;
-        // Delivery.findOne({where:{invoicNumber:fk,carrierId:id}},(err,delivery) => {
-        //     if(err) return next(err);
-
-        //     if(delivery) return next();
- 
-        //     Delivery.create({invoicNumber:fk,carrierId:id},(err,result) => {
-        //         if(err) return next();
-
-        //         result.deliveryuser.create({id:fk,userEmail:ctx.req.accessToken.userId},(err,re) => {
-        //             console.log(err);
-        //             console.log(re);
-
-
-        //             re.deliveryuser.findById(fk,(err,fi) => {
-        //                 console.log(fi);
-
-        //                 return next();
-        //             })
-                    
-        //         });
-
-        //     })
-        // });
         
     });
 }

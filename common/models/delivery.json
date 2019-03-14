@@ -15,6 +15,26 @@
         "dataLength": 20,
         "nullable": "N"
       }
+    },
+    "deliveryInfo": {
+      "type": "string",
+      "required": true,
+      "mysql": {
+        "columnName": "delivery_info",
+        "dataType": "TEXT",
+        "dataLength": 20,
+        "nullable": "N"
+      }
+    },
+    "finnalState": {
+      "type": "string",
+      "required": false,
+      "mysql": {
+        "columnName": "finnal_state",
+        "dataType": "VARCHAR",
+        "dataLength": 20,
+        "nullable": "N"
+      }
     }
   },
   "validations": [],

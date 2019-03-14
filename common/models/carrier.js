@@ -1,21 +1,29 @@
 'use strict';
-const delivery = require("../lib/delivery.js");
+const track = require("../lib/delivery.js");
 const DeliveryFrame = require('../lib/delivery-frame');
 
 module.exports = (Carrier) => {
-  Carrier.getDelivery = function(id,fk,cb) {
-    const Delivery = Carrier.app.models.delivery;
+  Carrier.getDelivery = async function(id,invoicNumber) {
+    const DeliveryModel = Carrier.app.models.delivery;
     const carrierId = id.split(".");
     
-    delivery.getTrack[carrierId[0]][carrierId[1]](fk,(err,result) => {
-      if(err){
-        return cb(err,null);
-      }
+    try{
+      const result = await track.getTrack[carrierId[0]][carrierId[1]](invoicNumber);
       
-      // if(!result instanceof DeliveryFrame) cb(null,result);
+      if(result instanceof DeliveryFrame){
+        const delivery = result.getDelivery();
+
+        await DeliveryModel.upsertWithWhere({carrierId:id,invoicNumber:invoicNumber},{carrierId:id,invoicNumber:invoicNumber,deliveryInfo:JSON.stringify(delivery),finnalState:delivery.deliveryInfo.finalState});
       
-      cb(null,result);
-    });
+        return delivery;
+      } 
+      
+      return result;
+     
+    }catch(e){
+      throw e;
+    }
+    
   }
 
 };
