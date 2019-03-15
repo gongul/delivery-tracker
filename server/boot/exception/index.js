@@ -1,4 +1,4 @@
-const ERROR_CODE = require('../../../common/errors/error-code');
+const ERROR_CODE = require('../../../errors/error-code');
 
 module.exports = function() {
     return function index(err, req, res, next) {

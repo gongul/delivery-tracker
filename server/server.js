@@ -64,12 +64,6 @@ if(cluster.isMaster){
   
   app.use(bodyParser.urlencoded({extended: true}));
 
-  const builder =  app.loopback.registry.modelBuilder;
-  builder.define("Login",{
-    "id": Number,
-    "password": String
-  });
-
   worker();
   
   boot(app, __dirname, (err) => {

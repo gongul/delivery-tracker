@@ -1,3 +1,5 @@
+const Errors = require('../../../errors/errors');
+
 module.exports = (app) => {
     const User = app.models.user;
     const Carrier = app.models.carrier;
@@ -49,6 +51,32 @@ module.exports = (app) => {
             "path": "/:id/carriers/:nk/delivery/:fk"
         }
     })
+
+    const _deliveryValidate = (info,next) => {
+        const { id } = info;
+        let hasUser = false; 
+        
+        User.find({},(err,users) => {
+            if(err) return next(err);
+
+            for(const user of users){
+                if(id === user.id) hasUser = true;
+            }
+
+            if(hasUser == false){
+                const customErr = new Errors.NotFoundError(`알 수 없는 user id ${id}`);
+                customErr.code = "MODEL_NOT_FOUND";
+
+                return next(customErr);
+            }
+
+            next();
+        });
+    }   
+
+    User.beforeRemote('getDelivery',(ctx,instance,next) => {
+       _deliveryValidate(ctx.args,next);
+    });
 
     User.afterRemote('create', function(context, userInstance, next) {
         var options = {

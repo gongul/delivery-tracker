@@ -1,4 +1,4 @@
-const Errors = require('../../../common/errors/errors');
+const Errors = require('../../../errors/errors');
 
 module.exports = (app) => {
     const Carrier = app.models.carrier;

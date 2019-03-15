@@ -1,6 +1,6 @@
 'use strict';
-const track = require("../lib/delivery.js");
-const DeliveryFrame = require('../lib/delivery-frame');
+const track = require("../../lib/custom/delivery");
+const DeliveryFrame = require('../../lib/custom/delivery-frame');
 
 module.exports = (Carrier) => {
   Carrier.getDelivery = async function(id,invoicNumber) {

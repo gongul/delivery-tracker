@@ -3,40 +3,62 @@ const path = require('path');
 
 function GeneralUser(User){
     User.getAllDelivery = function(id,nk,cb) {
-        const mapping = User.app.models.DeliveryMapping;
-
-
-        User.find({
+        User.findOne({
             where:{email:id},
             include: {
                 relation: 'deliveryMapping',
                 scope: {
-                    fields: ['delivery'],
                     include: {
                         relation: 'delivery',
                         scope: {
+                            fields: ['deliveryInfo'],
                             where: {carrierId: nk}
                         }
                     },
                 }
-                // deliveryMapping:'delivery',
-                // scope:
             }
-        },
-        function(err,result) {
-            console.log(result[0]);
-            // console.log(result[0].toJSON().deliveryMapping);
-            cb(null, {"msg":"test"});
-        });
+        },(err,result) => {
+            if(err) return cb(err,null);
+            
+            let list = [];
+            result.toJSON().deliveryMapping.forEach((mapping) => {
+                if(!mapping.delivery) return true;
+                
+                list.push(JSON.parse(mapping.delivery.deliveryInfo));
+            }); 
 
+            cb(null, list);
+        });
        
     }
 
     User.getDelivery = function(id,nk,fk,cb) {
-        console.log(id);
-        console.log(nk);
-        console.log(fk);
-        cb(null, {"msg":"test"});
+        User.findOne({
+            where:{email:id},
+            include: {
+                relation: 'deliveryMapping',
+                scope: {
+                    include: {
+                        relation: 'delivery',
+                        scope: {
+                            fields: ['deliveryInfo'],
+                            where: {carrierId: nk,invoicNumber:fk}
+                        }
+                    },
+                }
+            }
+        },(err,result) => {
+            if(err) return cb(err,null);
+
+            let list = [];
+            result.toJSON().deliveryMapping.forEach((mapping) => {
+                if(!mapping.delivery) return true;
+                
+                list.push(JSON.parse(mapping.delivery.deliveryInfo));
+            }); 
+
+            cb(null, list);
+        });
     }
   
       
