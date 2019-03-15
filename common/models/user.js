@@ -32,7 +32,7 @@ function GeneralUser(User){
        
     }
 
-    User.getDelivery = function(id,nk,fk,cb) {
+    User.getDelivery = function(id,nk,invoicNumber,cb) {
         User.findOne({
             where:{email:id},
             include: {
@@ -42,7 +42,7 @@ function GeneralUser(User){
                         relation: 'delivery',
                         scope: {
                             fields: ['deliveryInfo'],
-                            where: {carrierId: nk,invoicNumber:fk}
+                            where: {carrierId: nk,invoicNumber:invoicNumber}
                         }
                     },
                 }

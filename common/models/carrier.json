@@ -3,7 +3,6 @@
   "base": "PersistedModel",
   "idInjection": false,
   "options": {
-    "validateUpsert": true,
     "table": "Carrier"
   },
   "properties": {
@@ -52,6 +51,19 @@
       "foreignKey": "carrierId"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "__get__delivery"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "__get__delivery"
+    }
+  ],
   "methods": {}
 }

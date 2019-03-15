@@ -39,7 +39,7 @@ module.exports = (app) => {
                 "required": true
             },
             {
-                "arg": "fk",
+                "arg": "invoicNumber",
                 "type": "string",
                 "required": true
             }
@@ -48,7 +48,7 @@ module.exports = (app) => {
         returns: {type: 'Object',root: true},
         http: {
             "verb": "get",
-            "path": "/:id/carriers/:nk/delivery/:fk"
+            "path": "/:id/carriers/:nk/delivery/:invoicNumber"
         }
     })
 
@@ -77,6 +77,10 @@ module.exports = (app) => {
     User.beforeRemote('getDelivery',(ctx,instance,next) => {
        _deliveryValidate(ctx.args,next);
     });
+
+    User.beforeRemote('getAllDelivery',(ctx,instance,next) => {
+        _deliveryValidate(ctx.args,next);
+     });
 
     User.afterRemote('create', function(context, userInstance, next) {
         var options = {

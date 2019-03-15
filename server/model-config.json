@@ -46,12 +46,11 @@
     "options": {
       "remoting": {
         "sharedMethods": {
-          "*": true,
+          "*": false,
           "find": true,
           "findById": true,
-          "prototype.__create__delivery": true,
-          "prototype.__get__delivery": true,
-          "prototype.__findById__delivery": false
+          "getDelivery": true,
+          "prototype.__get__delivery": true
         }
       }
     }
