@@ -3,6 +3,11 @@ module.exports = (app) => {
         res.render('verified');
     });
 
+
+    app.get('/socket', function(req, res) {
+        res.render('socket');
+    });
+
     app.get('/reset-password', function(req, res, next) {
         if (!req.accessToken) return res.sendStatus(401);
         res.render('password-reset', {
