@@ -61,9 +61,9 @@ module.exports = (app) => {
     Carrier.on('deliveryMapping',async function(info) {
         const {id,invoicNumber,accessToken} = info; 
 
+        if(!accessToken) return;
+
         async function createDeliveryMapping(delivery){
-            if(!accessToken) return;
-        
             const data = await delivery.deliveryMapping.create({userEmail:accessToken.userId});
 
             return data;
