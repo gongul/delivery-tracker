@@ -1,5 +1,4 @@
 'use strict';
-const schedule = require('node-schedule');
 const cluster = require('cluster');
 const os = require('os');
 const uuid = require('uuid');
@@ -73,44 +72,7 @@ if(cluster.isMaster){
       // app.start();
       app.io = require('socket.io')(app.start());
 
-      app.io.on('connection', (socket) => {
-        const rule = new schedule.RecurrenceRule();
-        rule.second = 10;
-        let j;
-
-        socket.on('disconnect',(data) => {
-          console.log("disconnet");
-          if(j){
-            console.log("취소");
-            j.cancel();
-          }
-          console.log(data);
-        });
-
-
-        socket.on('leaveRoom',() => {
-          console.log("leaveRoom");
-          
-          socket.disconnect();
-        });
-
-        socket.on('joinRoom', (accessToken) => {
-          socket.join(accessToken, () => {
-            if(!j){
-              console.log("스케쥴 생성");
-              j = schedule.scheduleJob(rule,() => {console.log("5초"+accessToken)});
-            }
-            
-            console.log(' join a ' + accessToken);
-            app.io.to(accessToken).emit('joinRoom', accessToken);
-          });
-        });
-
-        socket.on('chat message', (accessToken,msg) => {
-          console.log("msg : " +msg);
-          app.io.to(accessToken).emit('chat message', msg);
-        });
-      });
+      require('./socket')(app.io,app);
     }
   });
 }

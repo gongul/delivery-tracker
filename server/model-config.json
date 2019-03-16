@@ -94,5 +94,9 @@
   },
   "Email": {
     "dataSource": "Email"
+  },
+  "Schedule": {
+    "dataSource": "db",
+    "public": true
   }
 }

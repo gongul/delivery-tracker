@@ -1,0 +1,34 @@
+{
+    "name": "Schedule",
+    "base": "PersistedModel",
+    "options": {},
+    "properties": {
+      "uuid": {
+        "type": "String",
+        "required": true,
+        "mysql": {
+          "columnName": "name",
+          "dataType": "varchar",
+          "dataLength": 30,
+          "nullable": "N"
+        }
+      },
+      "name": {
+        "type": "String",
+        "required": true,
+        "mysql": {
+          "columnName": "name",
+          "dataType": "varchar",
+          "dataLength": 30,
+          "nullable": "N"
+        }
+      }
+    },
+    "validations": [],
+    "relations": {
+     
+    },
+    "acls": [],
+    "methods": {}
+  }
+  

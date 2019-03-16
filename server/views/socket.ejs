@@ -27,10 +27,10 @@
       $(() => {
         socket = io();
 
-        socket.emit('joinRoom','HMJSEkSQd5h1tntNRzB3c37AAUFnqYRs8O0cmWatxTLjcEr7AmqAaboaw4Vu6OzQ');
+        socket.emit('joinRoom','kr.hanjin','502437969073');
 
         $('form').submit(() => {
-          socket.emit('chat message','HMJSEkSQd5h1tntNRzB3c37AAUFnqYRs8O0cmWatxTLjcEr7AmqAaboaw4Vu6OzQ', $('#m').val());
+          socket.emit('chat message','admin@admin.com', $('#m').val());
           $('#m').val('');
           return false;
         });
