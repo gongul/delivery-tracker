@@ -4,7 +4,7 @@ const ErrorCode = {
         CODE: 400
     },
     UNAUTHRIZED: {
-        MESSAGE: "Unauthorized Error",
+        MESSAGE: "권한 필수",
         CODE: 401
     },
     NOT_FOUND: {

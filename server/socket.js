@@ -4,7 +4,6 @@ const DeliveryFrame = require('../lib/custom/delivery-frame');
 
 module.exports = (io,app) => {
     io.on('connection', (socket) => {
-        console.log("connection");
         let job;
     
         socket.on('disconnect',(data) => {
@@ -39,9 +38,9 @@ module.exports = (io,app) => {
                     job = schedule.scheduleJob('1 * * * * *', async () => {
                         const carrierIds = carrierId.split(".");
 
-                        const delivery = await track.getTrack[carrierIds[0]][carrierIds[1]](invoicNumber)
+                        let delivery = await track.getTrack[carrierIds[0]][carrierIds[1]](invoicNumber)
 
-                        if(delivery instanceof DeliveryFrame) console.log(delivery.getDelivery());
+                        if(delivery instanceof DeliveryFrame) delivery = delivery.getDelivery();
 
                         io.to(carrierId+invoicNumber).emit('chat message', delivery);
                     });
@@ -58,9 +57,5 @@ module.exports = (io,app) => {
             });
         });
     
-        socket.on('chat message', (carrierId,invoicNumber,msg) => {
-            console.log("msg : " +msg);
-            app.io.to(carrierId+invoicNumber).emit('chat message', msg);
-        });
-      });
+    });
 }

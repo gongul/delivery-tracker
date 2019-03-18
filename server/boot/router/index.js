@@ -1,4 +1,8 @@
 module.exports = (app) => {
+    const admin = require('./admin');
+
+    app.use('/admin',admin);
+    
     app.get('/verified', function(req, res) {
         res.render('verified');
     });
