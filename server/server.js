@@ -5,6 +5,7 @@ const uuid = require('uuid');
 const boot = require('loopback-boot');
 const path = require('path');
 const bodyParser = require('body-parser');
+const express = require('express');
 
 const instanceId = uuid.v4();
 const cpuCount = os.cpus().length;
@@ -62,6 +63,8 @@ if(cluster.isMaster){
   app.set('view engine', 'ejs');
   
   app.use(bodyParser.urlencoded({extended: true}));
+
+  app.use('/static',express.static(__dirname+'/../static'));
 
   worker();
   
