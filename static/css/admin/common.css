@@ -123,11 +123,11 @@
     width: 50px;
     background-color: #d2d2d2;
     height: 1px;
-    
 }
 
 #content .search-form .search-detail-form .search-detail{
     display: inline-block;
+    margin: 20px 25px 20px 0;
 }
 #content .search-form .search-detail-form .search-detail .search-detail-title{
     display: inline-block;
@@ -143,6 +143,14 @@
     display: inline-block;
 }
 
+#content .search-result{
+    background-color: #fff;
+    box-shadow: 0 0 5px #cacaca;
+    padding: 15px 20px;
+    box-shadow: 0 0 5px #cacaca;
+    margin-top:30px;
+}
+
 
 .form-control{
     padding: 10px 30px 10px 20px;
@@ -156,4 +164,33 @@
     position: absolute;
     right: 13px;
     top: 14px;
+}
+
+
+.select-box-wrap{
+    position: relative;
+}
+.select-box-wrap .select-box{
+    position: absolute;
+    list-style: none;  
+    display: none;
+    z-index: 1;
+    top: 39px;
+    padding: 0 30px 0 20px;
+}
+.select-box-wrap .select-box > li{
+    margin: 10px 0;
+}
+.select-box-wrap .select-box::after{
+    content: none;
+}
+
+.date-picker-wrap{
+    position: relative;
+    border: 1px solid #969696;
+}
+.hasDatepicker{
+    text-align: center;
+    font-size: 14px;
+    height: 40px;
 }

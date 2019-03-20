@@ -1,5 +1,5 @@
 <div class="content-title-wrap">
-    <img class="content-title-img" src="/static/admin/iconfinder_Rounded-31_2024644.png"/>
+    <img class="content-title-img" src="/static/img/admin/iconfinder_Rounded-31_2024644.png"/>
     <div class="content-title">
         <span class="content-main-title">User List</span> 
         <span class="content-sub-title">Search for users.</span>
@@ -10,13 +10,128 @@
         Search User
     </div>
     <div class="search-detail-form">
-        <div class="search-detail">
+        <div id="search-word" class="search-detail">
             <div class="search-detail-title">Search Word</div>
+            <div class="search-detail-contents select-box-wrap">
+                <button id="search-word-type" class="form-control select-button">
+                    Email
+                </button>
+                <ul class="form-control select-box">
+                    <li class="select-box-items">Email</li>
+                    <li class="select-box-items">Name</li>
+                </ul>
+                <input id="search-word-value" class="form-control" type="text"/>
+            </div>
+        </div>
+        <div id="user-role" class="search-detail">
+            <div class="search-detail-title">User Role</div>
+            <div class="search-detail-contents select-box-wrap">
+                <button id="user-role-value" class="form-control select-button">
+                    Admin
+                </button>
+                <ul class="form-control select-box">
+                    <li class="select-box-items">Admin</li>
+                    <li class="select-box-items">User</li>
+                </ul>
+            </div>
+        </div>
+        <br/>
+        <div id="registration-date" class="search-detail">
+            <div class="search-detail-title">User Registration Date</div>
             <div class="search-detail-contents">
-                <button class="form-control">
-                    Test Option
-                </select>
+                <div class="date-picker-wrap">
+                    <input type="text" id="datepicker1"> ~
+                    <input type="text" id="datepicker2">
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="search-result">
+
+</div>
+<script>
+    function submit(){
+        var value = $('#search-word-value').val();
+        var type = $('#search-word-type').text().trim().toLowerCase();
+        var role = $('#user-role-value').text().trim().toLowerCase();
+
+        var url = "/api/users";
+        var methodType = "get";
+        var where = {};
+        
+        where[type] = value;
+
+        var data = {
+            "where":where,
+            "include": {
+                "relation": "roleMapping",
+                "scope": {
+                    "fields": ["roleId"],
+                    "include": {
+                        "relation": "role",
+                        "scope": {
+                            "fields": ["name"],
+                            "where": {"name":role}
+                        }
+                    }
+                }
+            }
+        };
+
+        
+
+        $.ajax({
+            url: url,
+            type: methodType,
+            data: { access_token:"", filter:data },
+            success: function(res){
+                console.log(res);
+            },error: function(e){
+                console.log(e);
+            }
+        });
+    }
+
+    $.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd',
+        prevText: '이전 달',
+        nextText: '다음 달',
+        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+        showMonthAfterYear: true,
+        yearSuffix: '년'
+    });
+
+    $(document).ready(function(){
+        $("#datepicker1, #datepicker2").datepicker();
+
+        $('.select-button').on('click',function(e){
+            var $selectBox =  $(this).siblings('.select-box');
+
+            if($selectBox.css('display') == "block") $selectBox.hide();
+            else $selectBox.show();
+           
+        });
+
+        $('.select-box-wrap').on('mouseleave',function(e){
+            var $selectBox = $(this).children('.select-box');
+            
+            if($selectBox.css('display') == "block") $selectBox.hide();
+        });
+
+        $('.select-box-items').on('click',function(e){
+            var $self = $(this);
+            var $selectBox =  $self.parent('.select-box');
+            var $selectButton = $selectBox.siblings('.select-button');
+
+            if($selectBox.css('display') == "block") $selectBox.hide();
+            
+            $selectButton.text($self.text());
+        });
+    });
+</script>

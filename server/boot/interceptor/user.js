@@ -5,6 +5,7 @@ module.exports = (app) => {
     const Carrier = app.models.carrier;
     const CarrierMapping = app.models.CarrierMapping;
 
+   
     User.remoteMethod('getAllDelivery', {
         accepts: [
             {
