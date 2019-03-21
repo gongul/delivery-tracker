@@ -194,3 +194,37 @@
     font-size: 14px;
     height: 40px;
 }
+
+.btn{
+    padding: 10px 30px 10px 30px;
+    position: relative;
+    font-size: 16px;
+    background-color: #253544;
+    color: #fff;
+    border: 1px solid #253544;
+}
+
+.submit-btn{
+    display: block;
+    margin: 20px auto;
+}
+
+.table{
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+.table > thead{
+    font-weight: bold;
+    font-size: 18px;
+}
+.table > thead > tr{
+    border-bottom: 1px solid #b5b5b5;
+}
+.table > tbody > tr{
+    border-bottom: 1px solid #d6dde1
+}
+.table th,td{
+    padding: 10px 20px;
+}

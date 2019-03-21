@@ -6,6 +6,7 @@ const boot = require('loopback-boot');
 const path = require('path');
 const bodyParser = require('body-parser');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const instanceId = uuid.v4();
 const cpuCount = os.cpus().length;
@@ -57,8 +58,7 @@ if(cluster.isMaster){
   master();
 }else if(cluster.isWorker){
   const app = module.exports = require("./app.js");
-
-  app.token();
+  
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'ejs');
   
@@ -66,6 +66,10 @@ if(cluster.isMaster){
 
   app.use('/static',express.static(__dirname+'/../static'));
 
+  app.use(cookieParser('!test!'));
+  app.token();
+  
+  
   worker();
   
   boot(app, __dirname, (err) => {

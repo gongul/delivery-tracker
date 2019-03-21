@@ -28,8 +28,11 @@
       "enabled": false
     }
   },
-  "session": {},
-  "auth": {},
+  "session": {
+
+  },
+  "auth": {
+  },
   "parse": {},
   "routes": {
     "loopback#rest": {

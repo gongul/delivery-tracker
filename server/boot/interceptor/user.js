@@ -129,12 +129,36 @@ module.exports = (app) => {
     User.observe('after save',(ctx, next) => {
         if(!ctx.isNewInstance) return next();
 
+        const e = new Errors.InternalServerError();
+
         CarrierMapping.create([
           {"userEmail":ctx.instance.id,"carrierId":"kr.cjlogistics"},
           {"userEmail":ctx.instance.id,"carrierId":"kr.epost"},
           {"userEmail":ctx.instance.id,"carrierId":"kr.hanjin"},
-        ])
+        ],(err,result) => {
+            if(err) return next(e);
 
-        next();
+            if(ctx.instance.id == "user@user.com" || ctx.instance.id == "admin@admin.com") return next();
+
+            const Role = app.models.Role;
+            
+            Role.findOne({where:{name:"user"}},(err,result) => {
+                if(err) return next(e);
+    
+                result.principals.create({
+                    principalType: "USER",
+                    principalId: ctx.instance.id
+                },(err,result) => {
+                    if(err) return next(e);
+                })
+            })
+
+            return next();
+        });
+
+      
+       
+
+     
     });
 }

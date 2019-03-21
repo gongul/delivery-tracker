@@ -3,7 +3,11 @@ const fileHelper = require("./lib/fileHelper.js");
 const app = loopback();
 
 app.token = function(){
+  // app.use(loopback.token());
+
   app.use(loopback.token());
+
+  
 }
 
 app.start = function() {

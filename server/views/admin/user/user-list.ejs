@@ -5,6 +5,8 @@
         <span class="content-sub-title">Search for users.</span>
     </div>
 </div>
+
+<form class="submit-form" action="/api/users" method="get">
 <div class="search-form">
     <div class="search-title">
         Search User
@@ -13,7 +15,7 @@
         <div id="search-word" class="search-detail">
             <div class="search-detail-title">Search Word</div>
             <div class="search-detail-contents select-box-wrap">
-                <button id="search-word-type" class="form-control select-button">
+                <button type="button" id="search-word-type" class="form-control select-button">
                     Email
                 </button>
                 <ul class="form-control select-box">
@@ -26,10 +28,11 @@
         <div id="user-role" class="search-detail">
             <div class="search-detail-title">User Role</div>
             <div class="search-detail-contents select-box-wrap">
-                <button id="user-role-value" class="form-control select-button">
-                    Admin
+                <button type="button" id="user-role-value" class="form-control select-button">
+                    All
                 </button>
                 <ul class="form-control select-box">
+                    <li class="select-box-items">All</li>
                     <li class="select-box-items">Admin</li>
                     <li class="select-box-items">User</li>
                 </ul>
@@ -45,23 +48,101 @@
                 </div>
             </div>
         </div>
+        <button class="btn submit-btn" type="submit">Search</button>
     </div>
 </div>
+</form>
 
 <div class="search-result">
-
+    <table class="table">
+        <thead>
+            <tr>
+                <th>email</th>
+                <th>name</th>
+                <th>tel</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>admin@admin.com</td>
+                <td>admin</td>
+                <td>xxx-xxxx</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <script>
-    function submit(){
-        var value = $('#search-word-value').val();
-        var type = $('#search-word-type').text().trim().toLowerCase();
-        var role = $('#user-role-value').text().trim().toLowerCase();
+    function appendHtml(data){
+        var html = '<table class="table">';
+        var userKey = [];
 
-        var url = "/api/users";
-        var methodType = "get";
+        var thead = '<thead><tr>';
+        for(key in data[0]){
+            userKey.push(key);
+
+            thead += '<th>'+key+'</th>';
+        }
+        thead += '</tr></thead>';
+
+        html += thead;
+
+        var tbody = '<tbody>';
+        for(key in data){
+            var user = data[key];
+            tbody += '<tr>'
+
+            for(var i=0;i<userKey.length;i++){
+                tbody += '<td>'+user[userKey[i]]+'</td>';
+            }
+
+            tbody += '</tr>';
+        }
+        tbody += '</tbody>';
+        
+        html += tbody;
+
+        $('.search-result').html(html);
+    }
+
+    function validate($serachWord,type){
+        var serachWordValue = $serachWord.val();
+        var regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+
+        
+        if(serachWordValue.length > 0 && type == "email"){
+            if(!regex.test(serachWordValue)){
+                alert("email is not valid");
+                $serachWord.focus();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function submit(self){
+        var $role = $('#user-role-value');
+        var $serachWord = $('#search-word-value');
+
+        var role = $role.text().trim().toLowerCase();
+        var type = $('#search-word-type').text().trim().toLowerCase();
+        var word = $serachWord.val();
+
+        if(!validate($serachWord,type)) return false;
+
+        var url = self.action;
+        var methodType = self.method;
         var where = {};
         
-        where[type] = value;
+
+        if(role == "all"){
+            role = "";
+        }
+
+        if(!(word == "" || word == null || word == undefined)){
+            where[type] = word;
+        }
+       
 
         var data = {
             "where":where,
@@ -73,21 +154,19 @@
                         "relation": "role",
                         "scope": {
                             "fields": ["name"],
-                            "where": {"name":role}
+                            "where": {"name": role}
                         }
                     }
                 }
             }
         };
 
-        
-
         $.ajax({
             url: url,
             type: methodType,
-            data: { access_token:"", filter:data },
+            data: { access_token:accessToken, filter:JSON.stringify(data) },
             success: function(res){
-                console.log(res);
+                appendHtml(res);
             },error: function(e){
                 console.log(e);
             }
@@ -113,6 +192,8 @@
         $('.select-button').on('click',function(e){
             var $selectBox =  $(this).siblings('.select-box');
 
+            if(e.detail == 0) return false;
+
             if($selectBox.css('display') == "block") $selectBox.hide();
             else $selectBox.show();
            
@@ -132,6 +213,12 @@
             if($selectBox.css('display') == "block") $selectBox.hide();
             
             $selectButton.text($self.text());
+        });
+
+        $('.submit-form').on('submit',function(e){
+            e.preventDefault();
+
+            submit(this);    
         });
     });
 </script>

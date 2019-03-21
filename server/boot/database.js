@@ -24,14 +24,30 @@ module.exports = async (app) => {
 
 
   User.create([
-    {"email":"admin@admin.com","name":"admin","tel":"xxxx-xxxx","password":"admin","emailVerified":true}
+    {"email":"admin@admin.com","name":"admin","tel":"xxxx-xxxx","password":"admin","emailVerified":true},
+    {"email":"user@user.com","name":"user","tel":"xxxx-xxxx","password":"user","emailVerified":true}
   ], function(err, users) {
     if (err) throw err;
 
       
-    console.log("기본 유저 등록 완료.");
+    console.log("유저 생성 완료.");
     console.log(users);
     
+    Role.create({
+      name: 'user'
+    },(err, role) => {
+      if(err) throw err;
+
+      role.principals.create({
+        principalType: RoleMapping.USER,
+        principalId: users[1].id
+      },(err, principal) => {
+        if (err) throw err;
+
+        console.log("일반 유저 등록 완료.");
+      });
+    });
+
     Role.create({
       name: 'admin'
     }, (err, role) => {
