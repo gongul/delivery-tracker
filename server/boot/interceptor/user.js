@@ -1,4 +1,8 @@
 const Errors = require('../../../errors/errors');
+var moment = require('moment');
+require('moment-timezone');
+
+moment.tz.setDefault("Asia/Seoul");
 
 module.exports = (app) => {
     const User = app.models.user;
@@ -74,6 +78,36 @@ module.exports = (app) => {
             next();
         });
     }   
+
+    User.beforeRemote('**',(ctx,instance,next) => { // 필터 중에 regDate(endDate) 를 포함하는 검색 조건이 있을 시 endDate +1 하는 기능
+        const and = ctx.args.filter.where.and;
+        let endDate;
+
+        if(!and) return next();
+
+        for(condition of and){
+            if(condition['regdate'] != null && condition['regdate'] != undefined){
+                if(condition['regdate']['lt']){
+                    endDate = new Date(condition['regdate']['lt']);
+                    endDate.setDate(endDate.getDate()+1);
+
+                    condition['regdate']['lt'] = endDate;
+                }
+            }
+        }
+
+        return next();
+     });
+
+    User.observe('before save', function (ctx, next) { // 회원가입 시 회원가입 일 삽입
+        if(!ctx.isNewInstance) return next();
+
+        var date = new Date().toISOString();
+        ctx.instance.regdate = date;
+
+        return next();
+    });
+
 
     User.beforeRemote('getDelivery',(ctx,instance,next) => {
        _deliveryValidate(ctx.args,next);

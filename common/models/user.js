@@ -1,6 +1,9 @@
 'use strict';
 const path = require('path');
+var moment = require('moment');
+require('moment-timezone');
 
+moment.tz.setDefault("Asia/Seoul");
 function GeneralUser(User){
     User.getAllDelivery = function(id,nk,cb) {
         User.findOne({

@@ -1,4 +1,8 @@
 const schema = require('../../common/models/carrier.json');
+var moment = require('moment');
+require('moment-timezone');
+
+moment.tz.setDefault("Asia/Seoul");
 
 module.exports = async (app) => {
   const Carrier = app.models.carrier;
@@ -22,10 +26,11 @@ module.exports = async (app) => {
    
   });
 
+  var date = new Date().toISOString();
 
   User.create([
-    {"email":"admin@admin.com","name":"admin","tel":"xxxx-xxxx","password":"admin","emailVerified":true},
-    {"email":"user@user.com","name":"user","tel":"xxxx-xxxx","password":"user","emailVerified":true}
+    {"email":"admin@admin.com","username":"admin","tel":"xxxx-xxxx","password":"admin","emailVerified":true,"regdate":date},
+    {"email":"user@user.com","username":"user","tel":"xxxx-xxxx","password":"user","emailVerified":true,"regdate":date}
   ], function(err, users) {
     if (err) throw err;
 

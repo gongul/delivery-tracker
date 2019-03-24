@@ -20,7 +20,7 @@
                 </button>
                 <ul class="form-control select-box">
                     <li class="select-box-items">Email</li>
-                    <li class="select-box-items">Name</li>
+                    <li class="select-box-items">UserName</li>
                 </ul>
                 <input id="search-word-value" class="form-control" type="text"/>
             </div>
@@ -54,11 +54,14 @@
 </form>
 
 <div class="search-result">
-    <table class="table">
+    <!--
+        ex) 
+
+        <table class="table">
         <thead>
             <tr>
                 <th>email</th>
-                <th>name</th>
+                <th>username</th>
                 <th>tel</th>
             </tr>
         </thead>
@@ -70,6 +73,28 @@
             </tr>
         </tbody>
     </table>
+    -->
+    
+</div>
+
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
     function appendHtml(data){
@@ -104,20 +129,45 @@
         $('.search-result').html(html);
     }
 
-    function validate($serachWord,type){
+    function validate($serachWord,type,date){
         var serachWordValue = $serachWord.val();
         var regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+        var $datePickers = $('.hasDatepicker');
+        var startDate = $datePickers[0].value;
+        var endDate = $datePickers[1].value;
 
-        
         if(serachWordValue.length > 0 && type == "email"){
             if(!regex.test(serachWordValue)){
                 alert("email is not valid");
                 $serachWord.focus();
                 return false;
             }
+        } 
+        
+        if(startDate != "" && startDate != null && startDate != undefined){
+            date.push({regdate: {gt: startDate}});
+        }
+        
+        if(endDate != "" && endDate != null && endDate != undefined){
+            date.push({regdate: {lt: endDate}});
         }
 
         return true;
+    }
+
+    function classification(data){
+        var result = [];
+
+        for(key in data){
+            if(data[key].roleMapping[0].role){
+              data[key].role =  data[key].roleMapping[0].role.name ;
+              delete data[key].roleMapping
+
+              result.push(data[key]);
+            } 
+        }
+
+        return result;
     }
 
     function submit(self){
@@ -127,22 +177,29 @@
         var role = $role.text().trim().toLowerCase();
         var type = $('#search-word-type').text().trim().toLowerCase();
         var word = $serachWord.val();
+        var date = [];
 
-        if(!validate($serachWord,type)) return false;
+        if(!validate($serachWord,type,date)) return false;
 
         var url = self.action;
         var methodType = self.method;
         var where = {};
-        
+        var roleWhere = {};
 
         if(role == "all"){
-            role = "";
+            roleWhere = {};
+        }else{
+            roleWhere["name"] = role;
         }
 
+
+        if(date.length > 0){
+            where['and'] = date;
+        }
+                
         if(!(word == "" || word == null || word == undefined)){
             where[type] = word;
         }
-       
 
         var data = {
             "where":where,
@@ -154,7 +211,7 @@
                         "relation": "role",
                         "scope": {
                             "fields": ["name"],
-                            "where": {"name": role}
+                            "where": roleWhere
                         }
                     }
                 }
@@ -166,7 +223,7 @@
             type: methodType,
             data: { access_token:accessToken, filter:JSON.stringify(data) },
             success: function(res){
-                appendHtml(res);
+                appendHtml(classification(res));
             },error: function(e){
                 console.log(e);
             }

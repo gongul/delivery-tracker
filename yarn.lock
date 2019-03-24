@@ -721,7 +721,7 @@ debug@=3.1.0, debug@~3.1.0:
   dependencies:
     ms "2.0.0"
 
-debug@^3.1.0:
+debug@^3.0.0, debug@^3.1.0:
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
   dependencies:
@@ -1946,6 +1946,14 @@ loopback-datatype-geopoint@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/loopback-datatype-geopoint/-/loopback-datatype-geopoint-1.0.0.tgz#fdaa5c7ab8d730a9ab7e54554be165f31cdf6100"
 
+loopback-ds-readonly-mixin@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/loopback-ds-readonly-mixin/-/loopback-ds-readonly-mixin-2.0.4.tgz#f3f1eb873825a3b0eafe1f46f504a1822927db26"
+  integrity sha1-8/Hrhzglo7Dq/h9G9QShgikn2yY=
+  dependencies:
+    debug "^3.0.0"
+    depd "^1.1.0"
+
 loopback-filters@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/loopback-filters/-/loopback-filters-1.0.0.tgz#43beafb2157ef550d51582a2597ff17c16498634"
@@ -2093,7 +2101,7 @@ moment-timezone@^0.5.23:
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.9.0":
+"moment@>= 2.9.0", moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
