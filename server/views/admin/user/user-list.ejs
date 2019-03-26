@@ -81,22 +81,107 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title">User Info</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>Modal body text goes here.</p>
+            <div class="search-form">
+                <div class="search-detail-form">
+                    <div class="search-detail">
+                        <div class="search-detail-title">Email</div>
+                        <div class="search-detail-contents select-box-wrap">
+                            <span id="modal-email" class="form-control form-control-readionly"></span>
+                        </div>
+                    </div>
+                    <div class="search-detail">
+                        <div class="search-detail-title">UserName</div>
+                        <div class="search-detail-contents select-box-wrap">
+                            <input id="modal-username" class="form-control" type="text" value="admin" />
+                        </div>
+                    </div>
+                    <div class="search-detail">
+                            <div class="search-detail-title">RegDate</div>
+                            <div class="search-detail-contents select-box-wrap">
+                                <span id="modal-regdate" class="form-control form-control-readionly"></span>
+                            </div>
+                        </div>
+                    <div class="search-detail">
+                        <div class="search-detail-title">Tel</div>
+                        <div class="search-detail-contents select-box-wrap">
+                            <input id="modal-tel" class="form-control" type="text" value="xxxx-xxx" />
+                        </div>
+                    </div>
+                    <div id="model-user-role" class="search-detail">
+                        <div class="search-detail-title">User Role</div>
+                        <div class="search-detail-contents select-box-wrap">
+                            <button type="button" id="modal-role" class="form-control select-button">
+                                Admin
+                            </button>
+                            <ul class="form-control select-box">
+                                <li class="select-box-items">Admin</li>
+                                <li class="select-box-items">User</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="modify-sumbit" class="btn btn-white">Save changes</button>
+        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
 <script>
+
+    function appendModal(data){
+        var $form = $('.modal-body').find('.search-detail-form');
+        
+        $form.find('#modal-email').text(data.email);
+        $form.find('#modal-username').val(data.username);
+        $form.find('#modal-regdate').text(data.regdate);
+        $form.find('#modal-tel').val(data.tel);
+        $form.find('#modal-role').text(data.role);
+        
+
+        $('.modal').modal('show');
+    }
+
+    function searchUserInfo($info){
+        var email = $info.text();
+        var url = "/api/users/"+email;
+        var data = {
+            "include": {
+                "relation": "roleMapping",
+                "scope": {
+                    "fields": ["roleId"],
+                    "include": {
+                        "relation": "role",
+                        "scope": {
+                            "fields": ["name"]
+                        }
+                    }
+                }
+            }
+        };
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: { access_token:accessToken, filter:JSON.stringify(data) },
+            success: function(res){
+                appendModal(classification(res));
+
+
+            },error: function(e){
+                console.log(e);
+            }
+        });
+    }
+
     function appendHtml(data){
         var html = '<table class="table">';
         var userKey = [];
@@ -117,7 +202,7 @@
             tbody += '<tr>'
 
             for(var i=0;i<userKey.length;i++){
-                tbody += '<td>'+user[userKey[i]]+'</td>';
+                tbody += '<td data-identifier='+userKey[i]+'>'+user[userKey[i]]+'</td>';
             }
 
             tbody += '</tr>';
@@ -127,6 +212,10 @@
         html += tbody;
 
         $('.search-result').html(html);
+
+        $('.table').find("tbody").find("tr").on('click',function(e){
+            searchUserInfo($(this).find("td[data-identifier=email]"));
+        })
     }
 
     function validate($serachWord,type,date){
@@ -158,16 +247,35 @@
     function classification(data){
         var result = [];
 
-        for(key in data){
-            if(data[key].roleMapping[0].role){
-              data[key].role =  data[key].roleMapping[0].role.name ;
-              delete data[key].roleMapping
+        function test(a){
+            if(a.roleMapping[0].role){
+              a.role = a.roleMapping[0].role.name ;
+              delete a.roleMapping
 
-              result.push(data[key]);
+              result.push(a);
             } 
         }
 
-        return result;
+        if(data instanceof Array){
+            for(key in data){
+                test(data[key]);
+            }
+
+            return result;
+        }
+
+        test(data);
+        return result[0];
+
+        
+            // if(data[key].roleMapping[0].where.and.role){
+            //   data[key].role =  data[key].roleMapping[0].role.name ;
+            //   delete data[key].roleMapping
+
+            //   result.push(data[key]);
+            // } 
+
+        // return result;
     }
 
     function submit(self){
@@ -277,5 +385,15 @@
 
             submit(this);    
         });
+
+
+        $("#modify-sumbit").on('click',function(e){
+            var $form = $('.modal-body').find('.search-detail-form');
+        
+            var e = $form.find('#modal-email').text();
+            var u = $form.find('#modal-username').val();
+            var t = $form.find('#modal-tel').val();
+            var r = $form.find('#modal-role').text().trim().toLowerCase();
+        }); 
     });
 </script>

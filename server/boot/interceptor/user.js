@@ -80,10 +80,12 @@ module.exports = (app) => {
     }   
 
     User.beforeRemote('**',(ctx,instance,next) => { // 필터 중에 regDate(endDate) 를 포함하는 검색 조건이 있을 시 endDate +1 하는 기능
+        if(!ctx.args.filter) return next();
+        else if(!ctx.args.filter.where) return next();
+        else if(!ctx.args.filter.where.and) return next();
+
         const and = ctx.args.filter.where.and;
         let endDate;
-
-        if(!and) return next();
 
         for(condition of and){
             if(condition['regdate'] != null && condition['regdate'] != undefined){
@@ -100,7 +102,12 @@ module.exports = (app) => {
      });
 
     User.observe('before save', function (ctx, next) { // 회원가입 시 회원가입 일 삽입
-        if(!ctx.isNewInstance) return next();
+        if(!ctx.isNewInstance){
+            if(ctx.instance) delete ctx.instance.regdate;
+            else if(ctx.data) delete ctx.data.regdate;
+
+            return next();
+        } 
 
         var date = new Date().toISOString();
         ctx.instance.regdate = date;

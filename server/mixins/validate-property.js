@@ -60,9 +60,20 @@ module.exports = function(Model, options) {
     });
 
     Model.observe('before save', function(ctx, next) { // 디비 수정 or 저장 시 모델 프로퍼티랑 다른 데이터가 들어오면 걸러내는 작업
+        let instanceProperties;
+        let hasInstance;
+
+        if(!ctx.instance){
+            instanceProperties = Object.keys(ctx.data);
+            hasInstance = false;
+        } 
+        else{
+            instanceProperties = Object.keys(ctx.instance.__data);
+            hasInstance = true;
+        } 
+        
         const modelName = ctx.Model.modelName;
         const AffectedModel = Model.app.models[modelName];
-        const instanceProperties = Object.keys(ctx.instance.__data);
         let properties = [];
 
         AffectedModel.forEachProperty((data) => {  
@@ -74,7 +85,8 @@ module.exports = function(Model, options) {
             const isAllowProperty = properties.indexOf(key);
 
             if(isAllowProperty == -1){
-                ctx.instance.unsetAttribute(key);
+                if(hasInstance) ctx.instance.unsetAttribute(key);
+                else delete ctx.data[key];
             }
         }
 

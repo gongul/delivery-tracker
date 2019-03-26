@@ -57,6 +57,7 @@
 }
 #side #side_wrap .menu .menu-list.menu-list-on .menu-items {
     position: relative;
+    margin: 5px 0;
 }
 #side #side_wrap .menu .menu-list.menu-list-on .menu-items.menu-items-on{
     color: #42a5f5;
@@ -103,19 +104,18 @@
     
 }
 
-#content .search-form{
+.search-form{
     background-color: #fff;
     box-shadow: 0 0 5px #cacaca;
     padding: 15px 20px;
-    box-shadow: 0 0 5px #cacaca;
 }
-#content .search-form .search-title{
+.search-form .search-title{
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 35px;
     position: relative;
 }
-#content .search-form .search-title::after{
+.search-form .search-title::after{
     content: "";
     position: absolute;
     bottom: -20px;
@@ -125,25 +125,25 @@
     height: 1px;
 }
 
-#content .search-form .search-detail-form .search-detail{
+.search-form .search-detail-form .search-detail{
     display: inline-block;
     margin: 20px 25px 20px 0;
 }
-#content .search-form .search-detail-form .search-detail .search-detail-title{
+.search-form .search-detail-form .search-detail .search-detail-title{
     display: inline-block;
     margin-right: 30px;
     position: relative;
 }
-#content .search-form .search-detail-form .search-detail .search-detail-title::after{
+.search-form .search-detail-form .search-detail .search-detail-title::after{
     content: "|";
     position: absolute;
     right: -15px;
 }
-#content .search-form .search-detail-form .search-detail .search-detail-contents{
+.search-form .search-detail-form .search-detail .search-detail-contents{
     display: inline-block;
 }
 
-#content .search-result{
+.search-result{
     background-color: #fff;
     box-shadow: 0 0 5px #cacaca;
     padding: 15px 20px;
@@ -165,11 +165,24 @@
     right: 13px;
     top: 14px;
 }
+.form-control-readionly{
+    background-color: #f3f3f3;    
+}
+.form-control-readionly::after{
+    content: "x";
+    position: absolute;
+    right: -17px;
+    top: 8px;
+}
+
 
 
 .select-box-wrap{
     position: relative;
 }
+.select-box-wrap .select-button{
+    cursor: pointer;
+}   
 .select-box-wrap .select-box{
     position: absolute;
     list-style: none;  
@@ -193,15 +206,22 @@
     text-align: center;
     font-size: 14px;
     height: 40px;
+    cursor: pointer;
 }
 
 .btn{
+    cursor: pointer;
     padding: 10px 30px 10px 30px;
     position: relative;
     font-size: 16px;
     background-color: #253544;
     color: #fff;
     border: 1px solid #253544;
+}
+
+.btn-white{
+    background-color: #fff;
+    color: #253544;
 }
 
 .submit-btn{
@@ -223,8 +243,67 @@
     border-bottom: 1px solid #b5b5b5;
 }
 .table > tbody > tr{
+    cursor: pointer;
     border-bottom: 1px solid #d6dde1
 }
 .table th,td{
     padding: 10px 20px;
+}
+
+
+
+.modal{
+    display:none;
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal .modal-dialog{
+    position: relative;
+    background-color: #fff;
+    width: 100%;
+    width: 500px;
+    margin: 30px auto;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #636363;
+}
+
+.modal .modal-dialog .modal-header{
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+
+.modal .modal-dialog .modal-header .modal-title{
+    font-size: 22px;
+    display: inline;
+}
+
+.modal .modal-dialog .modal-header .close{
+    float: right;
+    line-height: 1;
+    font-size: 27px;
+}
+
+.modal .modal-dialog .modal-body{
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+}   
+.modal .modal-dialog .modal-body > .search-form{
+    background-color: #fff;
+    box-shadow: none;
+    padding: 0;
+}
+
+.modal .modal-dialog .modal-footer{
+    padding: 20px;
+    text-align: right;
+}
+
+.modal .modal-dialog .modal-footer > button {
+    border-radius: 3px !important;
 }
