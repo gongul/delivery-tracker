@@ -80,39 +80,103 @@ module.exports = (app) => {
     }   
 
     User.beforeRemote('**',(ctx,instance,next) => { // 필터 중에 regDate(endDate) 를 포함하는 검색 조건이 있을 시 endDate +1 하는 기능
-        if(!ctx.args.filter) return next();
-        else if(!ctx.args.filter.where) return next();
-        else if(!ctx.args.filter.where.and) return next();
-
-        const and = ctx.args.filter.where.and;
-        let endDate;
-
-        for(condition of and){
-            if(condition['regdate'] != null && condition['regdate'] != undefined){
-                if(condition['regdate']['lt']){
-                    endDate = new Date(condition['regdate']['lt']);
-                    endDate.setDate(endDate.getDate()+1);
-
-                    condition['regdate']['lt'] = endDate;
+        
+        function validationDate(){
+            const filter = ctx.args.filter;
+            if(!filter) return false;
+            else if(!filter.where) return false;
+            else if(!filter.where.and) return false;
+    
+            const and = ctx.args.filter.where.and;
+            let endDate;
+    
+            for(condition of and){
+                if(condition['regdate'] != null && condition['regdate'] != undefined){
+                    if(condition['regdate']['lt']){
+                        endDate = new Date(condition['regdate']['lt']);
+                        endDate.setDate(endDate.getDate()+1);
+    
+                        condition['regdate']['lt'] = endDate;
+                    }
                 }
             }
+
         }
 
-        return next();
-     });
 
-    User.observe('before save', function (ctx, next) { // 회원가입 시 회원가입 일 삽입
+        validationDate();
+
+        // 이쪽 유저 권힌 체크 및 어드민이 아닐 시 role data 삭제
+        return next();
+    });
+
+    User.afterRemote('prototype.patchAttributes',(ctx,instance,next) => {
+        const Role = User.app.models.Role;
+        const RoleMapping = User.app.models.RoleMapping;
+        const roleValue = ctx.args.data.role;
+
+
+        if(!roleValue) return next();
+        
+        const error = new Errors.InternalServerError();
+        Role.findOne({where:{name:roleValue}},(err,result) => {
+            if(err) return next(error);
+
+            if(!result) return next(error);
+
+            RoleMapping.updateAll({principalId: ctx.req.params.id},{roleId:result.id}, (err,info) => {
+                if(err) return next(error);
+
+                if(!info) return next();
+
+                return next();
+            })
+        });
+    });
+
+    User.observe('before save', async function (ctx) { // 회원가입 시 회원가입 일 삽입
+        const RoleMapping = User.app.models.RoleMapping;
+        const Role = User.app.models.Role;
+        
+
+        async function validateRole(){
+            const error = new Errors.InternalServerError();
+
+            try{
+                const hasRoleMapping = await RoleMapping.findOne({where:{principalId:ctx.where.email}});
+                if(!hasRoleMapping) return false;
+                
+                const hasRole = await hasRoleMapping.role.get();
+                if(!hasRole) return false;
+                else if(hasRole.name != "admin") return false;
+
+                return true
+                
+            }catch(e){
+                return error;
+            }
+
+        }
+
         if(!ctx.isNewInstance){
             if(ctx.instance) delete ctx.instance.regdate;
-            else if(ctx.data) delete ctx.data.regdate;
+            if(ctx.data) delete ctx.data.regdate;
 
-            return next();
+            const result = await validateRole();
+
+            if(result instanceof Error) return result;
+            else if(!result) delete ctx.data.role;
+            
+            return;
         } 
 
+        /* default role */
+        ctx.instance.role = "user";
+        
         var date = new Date().toISOString();
         ctx.instance.regdate = date;
 
-        return next();
+        return true;
     });
 
 

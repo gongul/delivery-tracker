@@ -58,6 +58,17 @@
         "dataLength": 50,
         "nullable": "N"
       }
+    },
+    "role": {
+      "type": "string",
+      "required": true,
+      "description": "명시용 role",
+      "mysql": {
+        "columnName": "tel",
+        "dataType": "VARCHAR",
+        "dataLength": 50,
+        "nullable": "N"
+      }
     }
   },
   "mixins": {

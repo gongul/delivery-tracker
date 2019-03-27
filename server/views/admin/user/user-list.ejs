@@ -144,7 +144,7 @@
         $form.find('#modal-username').val(data.username);
         $form.find('#modal-regdate').text(data.regdate);
         $form.find('#modal-tel').val(data.tel);
-        $form.find('#modal-role').text(data.role);
+        $form.find('#modal-role').text(data.role.capitalizeFirstLetter());
         
 
         $('.modal').modal('show');
@@ -174,10 +174,8 @@
             data: { access_token:accessToken, filter:JSON.stringify(data) },
             success: function(res){
                 appendModal(classification(res));
-
-
             },error: function(e){
-                console.log(e);
+                console.log("Failed to retrieve user");
             }
         });
     }
@@ -247,9 +245,9 @@
     function classification(data){
         var result = [];
 
-        function test(a){
+        function roleClassification(a){
             if(a.roleMapping[0].role){
-              a.role = a.roleMapping[0].role.name ;
+              a.role = a.roleMapping[0].role.name.capitalizeFirstLetter();
               delete a.roleMapping
 
               result.push(a);
@@ -258,24 +256,15 @@
 
         if(data instanceof Array){
             for(key in data){
-                test(data[key]);
+                roleClassification(data[key]);
             }
 
             return result;
         }
 
-        test(data);
+        roleClassification(data);
         return result[0];
 
-        
-            // if(data[key].roleMapping[0].where.and.role){
-            //   data[key].role =  data[key].roleMapping[0].role.name ;
-            //   delete data[key].roleMapping
-
-            //   result.push(data[key]);
-            // } 
-
-        // return result;
     }
 
     function submit(self){
@@ -333,7 +322,7 @@
             success: function(res){
                 appendHtml(classification(res));
             },error: function(e){
-                console.log(e);
+                console.log("Failed to retrieve user list");
             }
         });
     }
@@ -390,10 +379,31 @@
         $("#modify-sumbit").on('click',function(e){
             var $form = $('.modal-body').find('.search-detail-form');
         
-            var e = $form.find('#modal-email').text();
-            var u = $form.find('#modal-username').val();
-            var t = $form.find('#modal-tel').val();
-            var r = $form.find('#modal-role').text().trim().toLowerCase();
+            var email = $form.find('#modal-email').text();
+            var username = $form.find('#modal-username').val();
+            var tel = $form.find('#modal-tel').val();
+            var role = $form.find('#modal-role').text().trim().toLowerCase();
+        
+            var url = "/api/users/"+email;
+            var data = {
+                "username": username,
+                "tel": tel,
+                "role": role
+            }
+
+            $.ajax({
+                url: url,
+                headers: {"X-Access-Token":accessToken},
+                type: "PATCH",
+                data: JSON.stringify(data),
+                contentType : 'application/json',
+                success: function(res){
+                    $('.modal').modal('hide');
+                    alert("User Information Modification Success");
+                },error: function(e){
+                    console.log("Failed to modify user information");
+                }
+            });
         }); 
     });
 </script>

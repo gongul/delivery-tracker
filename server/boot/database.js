@@ -29,8 +29,8 @@ module.exports = async (app) => {
   var date = new Date().toISOString();
 
   User.create([
-    {"email":"admin@admin.com","username":"admin","tel":"xxxx-xxxx","password":"admin","emailVerified":true,"regdate":date},
-    {"email":"user@user.com","username":"user","tel":"xxxx-xxxx","password":"user","emailVerified":true,"regdate":date}
+    {"email":"admin@admin.com","username":"admin","tel":"xxxx-xxxx","password":"admin","emailVerified":true,"regdate":date,"role":"admin"},
+    {"email":"user@user.com","username":"user","tel":"xxxx-xxxx","password":"user","emailVerified":true,"regdate":date,"role":"user"}
   ], function(err, users) {
     if (err) throw err;
 
