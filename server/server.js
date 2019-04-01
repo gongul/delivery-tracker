@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 
 const instanceId = uuid.v4();
 const cpuCount = os.cpus().length;
-const workerCount = cpuCount / 4;
+const workerCount = 1; // 세팅용 cpuCount / 4;
 
 const master = () => {
   const workerMsgListener = (msg) => {

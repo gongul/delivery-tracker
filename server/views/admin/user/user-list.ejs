@@ -22,7 +22,7 @@
                     <li class="select-box-items">Email</li>
                     <li class="select-box-items">UserName</li>
                 </ul>
-                <input id="search-word-value" class="form-control" type="text"/>
+                <input id="search-word-value" class="form-control" type="text" placeholder="Please write down the search term."/>
             </div>
         </div>
         <div id="user-role" class="search-detail">
@@ -43,8 +43,9 @@
             <div class="search-detail-title">User Registration Date</div>
             <div class="search-detail-contents">
                 <div class="date-picker-wrap">
-                    <input type="text" id="datepicker1"> ~
-                    <input type="text" id="datepicker2">
+                    <span class="date-picker"><input type="text" id="datepicker1"></span>
+                    <span class="date-format">~</span>
+                    <span class="date-picker"><input type="text" id="datepicker2"></span>
                 </div>
             </div>
         </div>
@@ -340,7 +341,38 @@
         yearSuffix: '년'
     });
 
+    function init(document){
+        $('#side').css('height',$(document).height());
+    }
+
     $(document).ready(function(){
+        init(this);
+
+        $(window).resize(function(e){
+            var windowWidth = $(this).width();
+
+            if(windowWidth > 1024){
+                $('#side').show();
+            }else{
+                $('#side').hide();
+                $('#side').css('height',$(document).height());
+            }
+ 
+        });
+
+        $('#header-menu').on('click',function(e){
+            $('#side').toggle('fast');
+        });
+
+        $('#side').on('click',function(e){
+            $('#side').toggle('fast');
+        })
+
+        $('#side-wrap').on('click',function(e){
+            e.stopPropagation();
+        })
+
+
         $("#datepicker1, #datepicker2").datepicker();
 
         $('.select-button').on('click',function(e){
@@ -406,4 +438,7 @@
             });
         }); 
     });
+
 </script>
+
+

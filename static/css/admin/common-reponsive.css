@@ -1,0 +1,96 @@
+* {margin: 0; padding: 0; border: 0;font-family: 'Quicksand', sans-serif;}
+
+
+
+@media
+only screen and (max-width:1024px){
+    #side{
+        position: absolute;
+        display:none;
+        width: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    }
+
+    #header{
+        display: block;
+    }
+
+    #content{
+        margin: 0;
+        padding: 70px 20px 40px;
+    }
+
+}
+
+
+@media
+only screen and (max-width:768px){
+    .search-form .search-detail-form .search-detail .search-detail-title{
+        margin-bottom: 15px;
+    }
+}
+
+
+@media
+only screen and (max-width:425px){
+    .search-detail-form *::after{
+        content: none !important;
+    }
+    .search-form .search-detail-form .search-detail{
+        margin: 20px 0px;
+        width: 100%;
+    }
+    .search-form .search-detail-form .search-detail .search-detail-contents{
+        width: 100%;
+    }
+    .search-form .search-detail-form .search-detail .search-detail-contents #search-word-value{
+        min-width: auto;
+    }
+
+    .select-box-wrap .select-button{
+        width: 100%;
+
+    }
+
+    .select-box-wrap > .form-control {
+        box-sizing : border-box;
+        width:  100%;
+        margin-bottom: 10px;
+    }
+    
+    .date-picker-wrap{
+        border: 0;
+    }
+    
+    .date-picker-wrap .date-format{
+        display: block;
+        text-align: center;
+    }
+
+    .date-picker-wrap .date-picker{
+        display: block;
+    }
+
+    .hasDatepicker{
+        border: 1px solid #969696;
+        width: 100%;
+    }
+    
+    .modal .modal-dialog{
+        width: auto;
+        margin: 30px 10px;
+    }
+    .modal .modal-dialog .modal-footer > button {
+        font-size: 14px;
+    }
+    
+    .modal .search-detail-contents{
+        width: auto !important;
+    }
+    .modal .form-control{
+        width: auto !important;
+    }
+}
