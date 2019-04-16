@@ -5,6 +5,12 @@ module.exports = (app) => {
         const err = new Error("Cannot GET "+req.originalUrl);
         err.status = "404";
 
+        if(req.accessToken) {
+            res.cookie('authorization',req.accessToken.id,{
+                signed: true,
+                maxAge: 100000000,
+            })
+        }
         // if(!req.accessToken) return next(err);
 
         // const roleMapping = app.models.RoleMapping;

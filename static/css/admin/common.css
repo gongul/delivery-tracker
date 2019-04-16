@@ -85,18 +85,25 @@
     padding: 10px 0 10px 40px;
     display: none;
 }
+#side #side-wrap .menu .menu-list a{
+    text-decoration: none;
+    color:#b7c0cd;
+}
 #side #side-wrap .menu .menu-list.menu-list-on{
     background-color: #212d3a;
     display: block;
 }
-#side #side-wrap .menu .menu-list.menu-list-on .menu-items {
+#side #side-wrap .menu .menu-list .menu-items {
     position: relative;
     margin: 5px 0;
 }
-#side #side-wrap .menu .menu-list.menu-list-on .menu-items.menu-items-on{
+#side #side-wrap .menu .menu-list .menu-items.menu-items-on{
     color: #42a5f5;
 }
-#side #side-wrap .menu .menu-list.menu-list-on .menu-items::before{
+#side #side-wrap .menu .menu-list .menu-items.menu-items-on a{
+    color: #42a5f5;
+}
+#side #side-wrap .menu .menu-list .menu-items::before{
     content: "\02C3";
     position: absolute;
     left: -11px;
@@ -212,6 +219,9 @@
     position: absolute;
     right: -17px;
     top: 8px;
+}
+.form-control.big{
+    width: 300px;
 }
 
 

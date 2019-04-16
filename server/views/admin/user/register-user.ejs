@@ -1,0 +1,67 @@
+<div class="content-title-wrap">
+    <img class="content-title-img" src="/static/img/admin/iconfinder_Rounded-31_2024644.png"/>
+    <div class="content-title">
+        <span class="content-main-title">Register User</span> 
+    </div>
+</div>
+
+<form class="submit-form" action="" method="get">
+<div class="search-form">
+    <div class="search-title">
+        Register User
+    </div>
+    <div class="search-detail-form">
+        <div id="search-word" class="search-detail">
+            <div class="search-detail-title">Email</div>
+            <div class="search-detail-contents select-box-wrap">
+                <input id="email" name="email" class="form-control big" type="email" placeholder="test@test.com" required/>
+            </div>
+        </div>
+        <div id="search-word" class="search-detail">
+            <div class="search-detail-title">Name</div>
+            <div class="search-detail-contents select-box-wrap">
+                <input id="name" name="name" class="form-control big" type="text" placeholder="test" required/>
+            </div>
+        </div>
+        <div id="search-word" class="search-detail">
+            <div class="search-detail-title">Password</div>
+            <div class="search-detail-contents select-box-wrap">
+                <input id="password" name="password" class="form-control" type="password" required/>
+            </div>
+        </div>
+        <div id="search-word" class="search-detail">
+            <div class="search-detail-title">Tel</div>
+            <div class="search-detail-contents select-box-wrap">
+                <input id="tel" name="tel" class="form-control" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" type="tel" placeholder="xxx-xxxx-xxxx"/>
+            </div>
+        </div>
+        <button class="btn submit-btn" type="submit">Search</button>
+    </div>
+</div>
+</form>
+
+<script>
+$(document).ready(function(){
+    $('.submit-form').on('submit',function(e){
+        e.preventDefault();
+        
+        var data = {
+            email: this.email.value,
+            username: this.name.value,
+            tel: this.tel.value,
+            password: this.password.value
+        }
+
+        $.ajax({
+            url: '/api/users',
+            type: 'post',
+            data: data,
+            success: function(res){
+                alert(res.message);
+            },error: function(e){
+                console.log("Failed to retrieve user list");
+            }
+        });
+    });
+})
+</script>
