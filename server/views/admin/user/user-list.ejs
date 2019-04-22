@@ -341,38 +341,8 @@
         yearSuffix: '년'
     });
 
-    function init(document){
-        $('#side').css('height',$(document).height());
-    }
 
     $(document).ready(function(){
-        init(this);
-
-        $(window).resize(function(e){
-            var windowWidth = $(this).width();
-
-            if(windowWidth > 1024){
-                $('#side').show();
-            }else{
-                $('#side').hide();
-                $('#side').css('height',$(document).height());
-            }
- 
-        });
-
-        $('#header-menu').on('click',function(e){
-            $('#side').toggle('fast');
-        });
-
-        $('#side').on('click',function(e){
-            $('#side').toggle('fast');
-        })
-
-        $('#side-wrap').on('click',function(e){
-            e.stopPropagation();
-        })
-
-
         $("#datepicker1, #datepicker2").datepicker();
 
         $('.select-button').on('click',function(e){

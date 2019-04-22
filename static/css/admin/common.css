@@ -70,10 +70,10 @@
     right: 20px;
     top: 14px;
 }
-#side #side-wrap .menu .menu-title.menu-title-on{
+#side #side-wrap .menu .menu-on .menu-title{
     background-color:#1d2531;
 }
-#side #side-wrap .menu .menu-title.menu-title-on::after{
+#side #side-wrap .menu.menu-on .menu-title::after{
     content: "\02C5";
     position: absolute;
     right: 20px;
@@ -89,7 +89,7 @@
     text-decoration: none;
     color:#b7c0cd;
 }
-#side #side-wrap .menu .menu-list.menu-list-on{
+#side #side-wrap .menu.menu-on .menu-list{
     background-color: #212d3a;
     display: block;
 }

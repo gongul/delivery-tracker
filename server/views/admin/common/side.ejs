@@ -10,25 +10,14 @@
     <li class="menu">
         <span class="menu-title">Carrier & Delivery</span>
         <ul class="menu-list">
-            <li>Carrier List</li>
-            <li>Delivery List</li>
+            <li class="menu-items">Carrier List</li>
+            <li class="menu-items">Delivery List</li>
         </ul>
     </li>
     <li class="menu">
         <span class="menu-title">Log</span>
         <ul class="menu-list">
-            <li>Failure Log</li>
+            <li class="menu-items">Failure Log</li>
         </ul>
     </li>
 </ul>
-
-<script>
-$(document).ready(function(){
-    $nav = $('.menu-items[name="'+nav+'"]');
-
-    $nav.parents(".menu").addClass("menu-on");
-    $nav.parents(".menu").find('.menu-title').addClass("menu-title-on");
-    $nav.parent(".menu-list").addClass("menu-list-on");
-    $nav.addClass("menu-items-on");
-});
-</script>
