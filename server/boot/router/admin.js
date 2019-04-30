@@ -27,4 +27,14 @@ router.get('/register-user',(req,res,next) => {
     });
 });
 
+
+
+router.get('/carrier-list',(req,res,next) => {
+    res.render('admin/index',{
+        accessToken: req.accessToken,
+        contents:'user/carrier-list',
+        nav:'carrierList'
+    });
+});
+
 module.exports = router;

@@ -1,0 +1,257 @@
+<div class="content-title-wrap">
+    <img class="content-title-img" src="/static/img/admin/iconfinder_Rounded-31_2024644.png"/>
+    <div class="content-title">
+        <span class="content-main-title">Carrier List</span> 
+        <span class="content-sub-title">Search for carrier.</span>
+    </div>
+</div>
+
+<form class="submit-form" action="/api/carriers" method="get">
+<div class="search-form">
+    <div class="search-title">
+        Search Carrier
+    </div>
+    <div class="search-detail-form">
+        <div id="search-word" class="search-detail">
+            <div class="search-detail-title">Search Word</div>
+            <div class="search-detail-contents select-box-wrap">
+                <button type="button" id="search-word-type" class="form-control select-button">
+                    ID
+                </button>
+                <ul class="form-control select-box">
+                    <li class="select-box-items">ID</li>
+                </ul>
+                <input id="search-word-value" class="form-control" type="text" placeholder="Please write down the search term."/>
+            </div>
+        </div>
+        <button class="btn submit-btn" type="submit">Search</button>
+    </div>
+</div>
+</form>
+
+<div class="search-result">
+    <!--
+        ex) 
+
+        <table class="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>tel</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>kr.hanjin</td>
+                <td>CJ 택배</td>
+                <td>xxxx-xxxx</td>
+            </tr>
+        </tbody>
+    </table>
+    -->
+    
+</div>
+
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">User Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <div class="search-form">
+                <div class="search-detail-form">
+                    <div class="search-detail">
+                        <div class="search-detail-title">ID</div>
+                        <div class="search-detail-contents select-box-wrap">
+                            <span id="modal-id" class="form-control form-control-readionly"></span>
+                        </div>
+                    </div>
+                    <div class="search-detail">
+                        <div class="search-detail-title">Name</div>
+                        <div class="search-detail-contents select-box-wrap">
+                            <input id="modal-name" class="form-control" type="text" value="admin" />
+                        </div>
+                    </div>
+                    <div class="search-detail">
+                        <div class="search-detail-title">Tel</div>
+                        <div class="search-detail-contents select-box-wrap">
+                            <input id="modal-tel" class="form-control" type="text" value="xxxx-xxx" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modify-sumbit" class="btn btn-white">Save changes</button>
+        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+    function appendModal(data){
+        var $form = $('.modal-body').find('.search-detail-form');
+        
+        $form.find('#modal-id').text(data.id);
+        $form.find('#modal-name').val(data.name);
+        $form.find('#modal-tel').val(data.tel);
+
+        $('.modal').modal('show');
+    }
+
+    function searchCarrierInfo($info){
+        var id = $info.text();
+        var url = "/api/carriers/"+id;
+    
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: { access_token:accessToken},
+            success: function(res){
+                appendModal(res);
+            },error: function(e){
+                console.log("Failed to retrieve user");
+            }
+        });
+    }
+
+    function appendHtml(data){
+        var html = '<table class="table">';
+        var userKey = [];
+
+        var thead = '<thead><tr>';
+        for(key in data[0]){
+            userKey.push(key);
+
+            thead += '<th>'+key+'</th>';
+        }
+        thead += '</tr></thead>';
+
+        html += thead;
+
+        var tbody = '<tbody>';
+        for(key in data){
+            var user = data[key];
+            tbody += '<tr>'
+
+            for(var i=0;i<userKey.length;i++){
+                tbody += '<td data-identifier='+userKey[i]+'>'+user[userKey[i]]+'</td>';
+            }
+
+            tbody += '</tr>';
+        }
+        tbody += '</tbody>';
+        
+        html += tbody;
+
+        $('.search-result').html(html);
+
+        $('.table').find("tbody").find("tr").on('click',function(e){
+           searchCarrierInfo($(this).find("td[data-identifier=id]"));
+        })
+    }
+
+  
+
+    function submit(self){
+        var $serachWord = $('#search-word-value');
+        var word = $serachWord.val();
+        var url = self.action;
+        var methodType = self.method;
+
+        if(word.length > 0){
+            url += "/"+word
+        }
+
+        $.ajax({
+            url: url,
+            type: methodType,
+            data: { access_token:accessToken},
+            success: function(res){
+                if(!(res instanceof Array)){
+                    appendHtml([res]);
+                    return;
+                }
+
+                appendHtml(res);
+            },error: function(e){
+                console.log("Failed to retrieve user list");
+            }
+        });
+    }
+
+
+    $(document).ready(function(){
+        $('.select-button').on('click',function(e){
+            var $selectBox =  $(this).siblings('.select-box');
+
+            if(e.detail == 0) return false;
+
+            if($selectBox.css('display') == "block") $selectBox.hide();
+            else $selectBox.show();
+           
+        });
+
+        $('.select-box-wrap').on('mouseleave',function(e){
+            var $selectBox = $(this).children('.select-box');
+            
+            if($selectBox.css('display') == "block") $selectBox.hide();
+        });
+
+        $('.select-box-items').on('click',function(e){
+            var $self = $(this);
+            var $selectBox =  $self.parent('.select-box');
+            var $selectButton = $selectBox.siblings('.select-button');
+
+            if($selectBox.css('display') == "block") $selectBox.hide();
+            
+            $selectButton.text($self.text());
+        });
+
+        $('.submit-form').on('submit',function(e){
+            e.preventDefault();
+
+            submit(this);    
+        });
+
+
+        $("#modify-sumbit").on('click',function(e){
+            var $form = $('.modal-body').find('.search-detail-form');
+        
+            var email = $form.find('#modal-email').text();
+            var username = $form.find('#modal-username').val();
+            var tel = $form.find('#modal-tel').val();
+            var role = $form.find('#modal-role').text().trim().toLowerCase();
+        
+            var url = "/api/users/"+email;
+            var data = {
+                "username": username,
+                "tel": tel,
+                "role": role
+            }
+
+            $.ajax({
+                url: url,
+                headers: {"X-Access-Token":accessToken},
+                type: "PATCH",
+                data: JSON.stringify(data),
+                contentType : 'application/json',
+                success: function(res){
+                    $('.modal').modal('hide');
+                    alert("User Information Modification Success");
+                },error: function(e){
+                    console.log("Failed to modify user information");
+                }
+            });
+        }); 
+    });
+
+</script>
+
+

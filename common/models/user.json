@@ -53,7 +53,7 @@
       "type": "string",
       "required": true,
       "mysql": {
-        "columnName": "tel",
+        "columnName": "password",
         "dataType": "VARCHAR",
         "dataLength": 50,
         "nullable": "N"

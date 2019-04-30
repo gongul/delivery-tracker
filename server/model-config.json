@@ -47,9 +47,11 @@
       "remoting": {
         "sharedMethods": {
           "*": false,
+          "create": true,
           "find": true,
           "findById": true,
           "getDelivery": true,
+          "prototype.patchAttributes": true,
           "prototype.__get__delivery": true
         }
       }
@@ -97,6 +99,6 @@
   },
   "Schedule": {
     "dataSource": "db",
-    "public": true
+    "public": false
   }
 }
