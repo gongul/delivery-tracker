@@ -11,7 +11,7 @@ module.exports = (app) => {
                 maxAge: 100000000,
             })
         }
-        // if(!req.accessToken) return next(err);
+        if(!req.accessToken) return next(err);
 
         // const roleMapping = app.models.RoleMapping;
 
