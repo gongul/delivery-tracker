@@ -17,21 +17,46 @@ Created based on node version 8.
 git clone https://github.com/gongul/delivery-tracker.git
 ```
 
-#### Run 
+#### Setting
+server/datasources.json.sample -> server/datasource.json Rename or Copy and edit file  
+
+```javascript
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "Email": {
+    "name": "mail",
+    "connector": "mail",
+    "transports": [{
+      "type": "SMTP",
+      "host": "smtp.gmail.com",
+      "secure": true,
+      "port": 465,
+      "auth": {
+        "user": "yourMail@gmail.com",  // please change to your gmail
+        "pass": "password" // please change to your password 
+      }
+    }]
+  }
+}
+```
+
+
+#### Run
 ```
 npm install
 
 npm start 
 ```
 
-If not defined npm_config_node_gyp If there is an error like this, correct it by the method below.(Windows)
-```
-npm install --global --production windows-build-tools 
-```
+If not defined npm_config_node_gyp If there is an error like this, correct it by the method below.(Windows)<br/>
+`npm install --global --production windows-build-tools`
+
 
 ## Example
-Examples are not provided separately,<br/>
-You'll need to go into the link below and check it out.
+Examples are not provided separately, You'll need to go into the link below and check it out.
 
 #### A test account is created automatically when the server runs.
 ```javascript
@@ -67,4 +92,4 @@ curl -X GET --header 'Accept: application/json' 'http://localhost/api/users/admi
 
 
 ## Third Project 
-##### App : https://github.com/CornSoupCookie/trackingdelivery
+##### CornSoupCookie : https://github.com/CornSoupCookie/trackingdelivery
