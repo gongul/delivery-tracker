@@ -28,7 +28,7 @@
     "iconv": "^2.3.2",
     "iconv-lite": "^0.4.24",
     "is-buffer": "1.1.6",
-    "jsdom": "^13.1.0",
+    "jsdom": "^16.5.0",
     "loopback": "^3.22.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^6.2.0",
